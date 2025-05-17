@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 14:51:45 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/07 19:17:13 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:28:33 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_token_type_str(t_type type)
 	char	*str;
 
 	str = "TOKEN_WORD TOKEN_PIPE TOKEN_REDIR_IN TOKEN_REDIR_OUT" \
-	"TOKEN_REDIR_OUT_APPEND TOKEN_REDIR_ERR TOKEN_REDIR_ERR_APPEND" \
+	" TOKEN_REDIR_OUT_APPEND " \
 	"TOKEN_ENV_VAR TOKEN_CMD TOKEN_FILENAME TOKEN_HEREDOC";
 	type_str = ft_split(str, ' ');
 	if (type >= 0 && type <= TOKEN_HEREDOC)

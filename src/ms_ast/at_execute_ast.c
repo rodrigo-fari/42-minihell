@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:58:16 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/14 22:06:18 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:21:24 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,9 @@ void	execute_ast(t_ast_node *node, t_env *env, t_token *tokens)
 {
 	if (!node)
 		return ;
-	if (node->type == TOKEN_PIPE)
+	if (node->type == TOKEN_HEREDOC)
+		execute_heredoc(node);
+	else if (node->type == TOKEN_PIPE)
 		execute_pipe(node->left, node->right, env);
 	else if (is_redir(node->type))
 		execute_redirection(node, env);

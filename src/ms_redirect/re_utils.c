@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:36:57 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/14 20:09:54 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:20:40 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ int	process_redirection(t_ast_node *node, char *filename, int is_pipe)
 {
 	int	fd;
 
-	if (node->type == TOKEN_HEREDOC)
-	{
-		printf("Heredoc not implemented yet\n");
-		return (0);
-	}
 	fd = get_redir_fd(node, filename);
 	if (fd == -1)
 	{

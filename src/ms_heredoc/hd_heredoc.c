@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hd_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeberius <aeberius@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/07 19:45:40 by aeberius         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:19:05 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	handle_heredoc_input(const char *delimiter, int fd)
 {
 	char	*line;
 
-	signal(SIGINT, sig_ctrl_c);
 	while (1)
 	{
 		line = readline("> ");

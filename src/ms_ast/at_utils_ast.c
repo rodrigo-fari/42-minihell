@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:55:37 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/14 20:13:18 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:03:14 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	fill_args(t_ast_node *node, t_token **token, int count)
 	{
 		if (!is_redir(curr->type))
 		{
-            if (curr->value && curr->value[0] != '\0')
-			    node->args[i++] = ft_strdup(curr->value);
+			if (curr->value && curr->value[0] != '\0')
+				node->args[i++] = ft_strdup(curr->value);
 			curr = curr->next;
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/14 21:43:11 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/17 19:09:25 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ void		free_env_list(t_env *env);
 void		free_envp(char **envp);
 void		cleanup_shell(t_shell *shell);
 t_shell		*get_shell(void);
-
+void		handle_heredoc_input(const char *delimiter, int fd);
+int			execute_heredoc(t_ast_node *node);
 
 
 
