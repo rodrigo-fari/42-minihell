@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   at_build_ast.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeberius <aeberius@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: aeberius@student.42porto.com <aeberius>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:57:47 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/07 19:58:45 by aeberius         ###   ########.fr       */
+/*   Updated: 2025/05/18 18:42:12 by aeberius@st      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,20 +54,36 @@ void	handle_redir(t_ast_node **root, t_token **token)
 
 	redir_node = create_node((*token)->type);
 	if (!redir_node)
-		return ;
-	redir_node->left = *root;
+		return;
+	if (*root && (*root)->type == TOKEN_PIPE)
+	{
+		if (!(*root)->right)
+		{
+			redir_node->left = NULL;
+			(*root)->right = redir_node;
+		}
+		else
+		{
+			redir_node->left = (*root)->right;
+			(*root)->right = redir_node;
+		}
+	}
+	else
+	{
+		redir_node->left = *root;
+		*root = redir_node;
+	}
 	*token = (*token)->next;
 	if (*token)
 	{
 		filename_node = create_node(TOKEN_FILENAME);
 		if (!filename_node)
-			return ;
+			return;
 		filename_node->args = ft_calloc(2, sizeof(char *));
 		if (filename_node->args)
 			filename_node->args[0] = ft_strdup((*token)->value);
 		redir_node->right = filename_node;
 	}
-	*root = redir_node;
 	*token = (*token)->next;
 }
 
