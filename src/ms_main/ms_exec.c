@@ -35,7 +35,9 @@ void ms_exec(char *input, t_env *env)
     shell->tokens = tokens;
     shell->ast_root = ast_root;
     shell->env_list = env;
+    collect_all_heredocs(ast_root);
     execute_ast(ast_root, env, tokens);
+    cleanup_heredocs(ast_root);
     free_ast(ast_root);
     ms_free(NULL, input, NULL, tokens);
     return;

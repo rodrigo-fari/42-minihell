@@ -67,8 +67,7 @@ t_token *token_to_struct(char **commands)
 						   current->type == TOKEN_REDIR_OUT ||
 						   current->type == TOKEN_REDIR_OUT_APPEND ||
 						   current->type == TOKEN_REDIR_ERR ||
-						   current->type == TOKEN_REDIR_ERR_APPEND ||
-						   current->type == TOKEN_HEREDOC);
+						   current->type == TOKEN_REDIR_ERR_APPEND);
 		current->next = NULL;
 		tk_listadd_back(&head, current);
 		i++;

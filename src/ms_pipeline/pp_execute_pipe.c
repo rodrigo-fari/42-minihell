@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pp_execute_pipe.c                                  :+:      :+:    :+:   */
+/*   ms_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rde-fari <rde-fari@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   */
-/*   Created: 2025/04/18 20:02:42 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/12 22:18:22 by rde-fari         ###   ########.fr       */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/23 21:11:14 by aeberius          #+#    #+#             */
+/*   Updated: 2025/05/14 21:13:27 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,34 @@ void	pipe_child1(int *pipefd, t_ast_node *left, t_env *env)
 	exit(g_exit_status);
 }
 
+int apply_output_redirections(t_ast_node *node, int is_pipe)
+{
+    char *filename;
+    while (node && is_redir(node->type))
+    {
+        if (node->type == TOKEN_REDIR_OUT || node->type == TOKEN_REDIR_OUT_APPEND ||
+            node->type == TOKEN_REDIR_ERR || node->type == TOKEN_REDIR_ERR_APPEND)
+        {
+            if (!validate_redir_node(node))
+                return (0);
+            filename = node->args[0];
+            if (!process_redirection(node, filename, is_pipe))
+                return (0);
+        }
+        node = node->right;
+    }
+    return 1;
+}
+
 void	pipe_child2(int *pipefd, t_ast_node *right, t_env *env)
 {
-	int	has_in_redir;
-
-	has_in_redir = node_has_in_redir(right);
-	if (!apply_redirections(right, 1))
-		exit(1);
-	close(pipefd[1]);
-	if (!has_in_redir)
-		dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
-	execute_ast(find_command_node(right), env, NULL);
-	exit(g_exit_status);
+    if (!apply_output_redirections(right, 1))
+        exit(1);
+    close(pipefd[1]);
+    dup2(pipefd[0], STDIN_FILENO);
+    close(pipefd[0]);
+    execute_ast(find_command_node(right), env, NULL);
+    exit(g_exit_status);
 }
 
 void	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *env)

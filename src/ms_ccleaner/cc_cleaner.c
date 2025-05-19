@@ -33,9 +33,26 @@ void	cleanup_shell(t_shell *shell)
 	if (shell->tokens)
 		free_tokens(shell->tokens);
 	if (shell->ast_root)
+	{
+		cleanup_heredocs(shell->ast_root);
 		free_ast(shell->ast_root);
+	}
 	if (shell->env_list)
 		free_env_list(shell->env_list);
 	if (shell->envp)
 		free_envp(shell->envp);
+}
+
+void	cleanup_heredocs(t_ast_node *node)
+{
+	if (!node)
+		return;
+	if (node->type == TOKEN_HEREDOC && node->heredoc_file)
+	{
+		unlink(node->heredoc_file);
+		free(node->heredoc_file);
+		node->heredoc_file = NULL;
+	}
+	cleanup_heredocs(node->left);
+	cleanup_heredocs(node->right);
 }
