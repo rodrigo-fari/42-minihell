@@ -12,49 +12,51 @@
 
 #include "minishell.h"
 
-void	ms_exec(char *input, t_env *env)
+void ms_exec(char *input, t_env *env)
 {
-	char		**commands;
-	t_token		*tokens;
-	t_ast_node	*ast_root;
-	t_shell		*shell;
+    char **commands;
+    t_token *tokens;
+    t_ast_node *ast_root;
+    t_shell *shell;
 
-	commands = tk_splitter(input, 0, 0);
-	if (!ps_parsing(commands, 0))
-	{
-		ms_free(NULL, input, commands, NULL);
-		return ;
-	}
-	tokens = token_to_struct(commands);
-	free_splits(commands);
-	quote_fix(tokens);
-	ast_root = build_ast(tokens);
-	shell = get_shell();
-	shell->tokens = tokens;
-	shell->ast_root = ast_root;
-	shell->env_list = env;
-	execute_ast(ast_root, env, tokens);
-	free_ast(ast_root);
-	ms_free(NULL, input, NULL, tokens);
-	return ;
+    commands = tk_splitter(input, 0, 0);
+    if (!ps_parsing(commands, 0))
+    {
+        ms_free(NULL, input, commands, NULL);
+        return;
+    }
+    tokens = token_to_struct(commands);
+    free_splits(commands);
+    quote_fix(tokens);
+    // print_tokens(tokens);
+    ast_root = build_ast(tokens);
+    // print_ast(ast_root);
+    shell = get_shell();
+    shell->tokens = tokens;
+    shell->ast_root = ast_root;
+    shell->env_list = env;
+    execute_ast(ast_root, env, tokens);
+    free_ast(ast_root);
+    ms_free(NULL, input, NULL, tokens);
+    return;
 }
 
-void	print_ast(t_ast_node *tmp)
+void print_ast(t_ast_node *tmp)
 {
-	int	i;
-
-	i = 0;
-	printf("AST NODE + VALUES:\n");
-	while (tmp)
-	{
-		printf("TID[%d]\nTTYPE[%s]\n", i, get_token_type_str(tmp->type));
-		if (tmp->left)
-			printf("LEFT_TKN[%s]\n", get_token_type_str(tmp->left->type));
-		if (tmp->right)
-			printf("RIGHT_TKN[%s]\n", get_token_type_str(tmp->right->type));
-		if (tmp->args)
-			ft_print_array(tmp->args);
-		tmp = tmp->right;
-		i++;
-	}
+    static int i = 0;
+    if (!tmp)
+        return;
+    printf("TID[%d]\nTTYPE[%s]\n", i++, get_token_type_str(tmp->type));
+    if (tmp->left)
+    {
+        printf("LEFT_TKN[%s]\n", get_token_type_str(tmp->left->type));
+        print_ast(tmp->left);
+    }
+    if (tmp->right)
+    {
+        printf("RIGHT_TKN[%s]\n", get_token_type_str(tmp->right->type));
+        print_ast(tmp->right);
+    }
+    if (tmp->args)
+        ft_print_array(tmp->args);
 }

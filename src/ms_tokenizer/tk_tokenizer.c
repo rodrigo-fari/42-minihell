@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	token_type(char *token)
+int token_type(char *token)
 {
 	if (ft_strncmp(token, "2>>", 3) == 0)
 		return (TOKEN_REDIR_ERR_APPEND);
@@ -34,14 +34,18 @@ int	token_type(char *token)
 		return (TOKEN_WORD);
 }
 
-t_token	*token_to_struct(char **commands)
+t_token *token_to_struct(char **commands)
 {
-	t_token	*head;
-	t_token	*current;
-	int		i;
+	t_token *head;
+	t_token *current;
+	int i;
+	int expect_cmd;
+	int expect_filename;
 
 	head = NULL;
 	i = 0;
+	expect_cmd = 1; // At the start, expect a command
+	expect_filename = 0;
 	while (commands[i])
 	{
 		current = ft_calloc(1, sizeof(t_token));
@@ -54,6 +58,17 @@ t_token	*token_to_struct(char **commands)
 			return (NULL);
 		}
 		current->type = token_type(commands[i]);
+		if (expect_cmd && current->type == TOKEN_WORD)
+			current->type = TOKEN_CMD;
+		else if (expect_filename && current->type == TOKEN_WORD)
+			current->type = TOKEN_FILENAME;
+		expect_cmd = (current->type == TOKEN_PIPE);
+		expect_filename = (current->type == TOKEN_REDIR_IN ||
+						   current->type == TOKEN_REDIR_OUT ||
+						   current->type == TOKEN_REDIR_OUT_APPEND ||
+						   current->type == TOKEN_REDIR_ERR ||
+						   current->type == TOKEN_REDIR_ERR_APPEND ||
+						   current->type == TOKEN_HEREDOC);
 		current->next = NULL;
 		tk_listadd_back(&head, current);
 		i++;

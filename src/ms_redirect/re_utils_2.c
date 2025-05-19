@@ -29,7 +29,7 @@ int	node_has_in_redir(t_ast_node *node)
 	{
 		if (node->type == TOKEN_REDIR_IN || node->type == TOKEN_HEREDOC)
 			return (1);
-		node = node->left;
+		node = node->right;
 	}
 	return (0);
 }

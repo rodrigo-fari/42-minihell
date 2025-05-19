@@ -43,17 +43,18 @@ int	apply_redirections(t_ast_node *node, int is_pipe)
 
 	if (!node || !is_redir(node->type))
 		return (1);
-	if (node->left && is_redir(node->left->type))
-		if (!apply_redirections(node->left, is_pipe))
+	if (node->right && is_redir(node->right->type))
+		if (!apply_redirections(node->right, is_pipe))
 			return (0);
 	if (!validate_redir_node(node))
 		return (0);
-	filename = node->right->args[0];
+	filename = node->args[0];
 	return (process_redirection(node, filename, is_pipe));
 }
 
 void	handle_redir_fd(t_ast_node *node, int fd, int is_pipe)
 {
+    (void) is_pipe;
 	if (node->type == TOKEN_REDIR_IN)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
@@ -62,11 +63,9 @@ void	handle_redir_fd(t_ast_node *node, int fd, int is_pipe)
 	else if (node->type == TOKEN_REDIR_OUT
 		|| node->type == TOKEN_REDIR_OUT_APPEND)
 	{
-		if (!is_pipe)
-		{
-			if (dup2(fd, STDOUT_FILENO) == -1)
-				bi_error("Invalid input.\n");
-		}
+
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			bi_error("Invalid input.\n");
 	}
 	else if (node->type == TOKEN_REDIR_ERR
 		|| node->type == TOKEN_REDIR_ERR_APPEND)

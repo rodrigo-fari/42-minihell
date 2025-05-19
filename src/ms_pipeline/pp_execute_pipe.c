@@ -14,12 +14,18 @@
 
 void	pipe_child1(int *pipefd, t_ast_node *left, t_env *env)
 {
+	int has_out_redir;
+
+	has_out_redir = node_has_out_redir(left);
 	if (!apply_redirections(left, 1))
 		exit(1);
 	close(pipefd[0]);
-	dup2(pipefd[1], STDOUT_FILENO);
+    if (!has_out_redir)
+	{
+    	dup2(pipefd[1], STDOUT_FILENO);
+	}
 	close(pipefd[1]);
-	execute_ast(left, env, NULL);
+	execute_ast(find_command_node(left), env, NULL);
 	exit(g_exit_status);
 }
 
@@ -34,7 +40,7 @@ void	pipe_child2(int *pipefd, t_ast_node *right, t_env *env)
 	if (!has_in_redir)
 		dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
-	execute_ast(right, env, NULL);
+	execute_ast(find_command_node(right), env, NULL);
 	exit(g_exit_status);
 }
 
@@ -65,4 +71,16 @@ void	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *env)
 		g_exit_status = WEXITSTATUS(status2);
 	else
 		g_exit_status = 1;
+}
+
+int node_has_out_redir(t_ast_node *node)
+{
+    while (node)
+    {
+        if (node->type == TOKEN_REDIR_OUT || node->type == TOKEN_REDIR_OUT_APPEND ||
+            node->type == TOKEN_REDIR_ERR || node->type == TOKEN_REDIR_ERR_APPEND)
+            return 1;
+        node = node->right;
+    }
+    return 0;
 }

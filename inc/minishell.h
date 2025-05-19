@@ -54,7 +54,7 @@ extern int	g_exit_status;
 //【Definition of available token types】
 typedef enum e_type
 {
-	TOKEN_WORD,				// For commands and arguments
+	TOKEN_WORD = 0,				// For commands and arguments
 	TOKEN_PIPE,				// For '|'
 	TOKEN_REDIR_IN,			// For '<'
 	TOKEN_REDIR_OUT,		// For '>'
@@ -272,6 +272,8 @@ char		*remove_quotes(char *input);
 void		pipe_child1(int *pipefd, t_ast_node *left, t_env *env);
 void		pipe_child2(int *pipefd, t_ast_node *right, t_env *env);
 void		execute_pipe(t_ast_node *left, t_ast_node *right, t_env *env);
+int         node_has_out_redir(t_ast_node *node);
+
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ REDIRECT FUNCTIONS ┃
 //【re_execute_redirection.c】-【5 function limit achived on this file.】

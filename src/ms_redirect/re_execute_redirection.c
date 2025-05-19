@@ -87,11 +87,9 @@ void	execute_redirection(t_ast_node *node, t_env *env)
 
 t_ast_node	*find_command_node(t_ast_node *node)
 {
-	if (!node)
-		return (NULL);
-	if (!is_redir(node->type))
-		return (node);
-	if (node->left && !is_redir(node->left->type))
-		return (node->left);
-	return (find_command_node(node->left));
+    if (!node)
+        return (NULL);
+    if (!is_redir(node->type))
+        return (node);
+    return find_command_node(node->right);
 }
