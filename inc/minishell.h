@@ -82,6 +82,7 @@ typedef struct s_ast_node
 	char				**args;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
+    char				*heredoc_file;
 }	t_ast_node;
 
 //【Definition of environment variable's node content】
@@ -110,9 +111,11 @@ void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
 void		free_envp(char **envp);
 void		cleanup_shell(t_shell *shell);
+void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
 void		handle_heredoc_input(const char *delimiter, int fd);
 int			execute_heredoc(t_ast_node *node);
+void		collect_all_heredocs(t_ast_node *node);
 
 
 
