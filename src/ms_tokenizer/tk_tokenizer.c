@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 17:49:21 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/17 19:24:18 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:46:06 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ t_token *token_to_struct(char **commands)
 {
 	t_token *head;
 	t_token *current;
+	t_token *after_heredoc;
 	int i;
 	int expect_cmd;
 	int expect_filename;
 
+	after_heredoc = NULL;
 	head = NULL;
 	i = 0;
 	expect_cmd = 1; // At the start, expect a command
@@ -50,24 +52,28 @@ t_token *token_to_struct(char **commands)
 	{
 		current = ft_calloc(1, sizeof(t_token));
 		if (!current)
-			return (NULL);
+		return (NULL);
 		current->value = ft_strdup(commands[i]);
 		if (!current->value)
 		{
 			free(current);
 			return (NULL);
 		}
+		if (after_heredoc)
+			hd_atributes(current);
 		current->type = token_type(commands[i]);
+		if (current->type == TOKEN_HEREDOC)
+			after_heredoc = current;
 		if (expect_cmd && current->type == TOKEN_WORD)
 			current->type = TOKEN_CMD;
 		else if (expect_filename && current->type == TOKEN_WORD)
 			current->type = TOKEN_FILENAME;
 		expect_cmd = (current->type == TOKEN_PIPE);
 		expect_filename = (current->type == TOKEN_REDIR_IN ||
-						   current->type == TOKEN_REDIR_OUT ||
-						   current->type == TOKEN_REDIR_OUT_APPEND ||
-						   current->type == TOKEN_REDIR_ERR ||
-						   current->type == TOKEN_REDIR_ERR_APPEND);
+							current->type == TOKEN_REDIR_OUT ||
+							current->type == TOKEN_REDIR_OUT_APPEND ||
+							current->type == TOKEN_REDIR_ERR ||
+							current->type == TOKEN_REDIR_ERR_APPEND);
 		current->next = NULL;
 		tk_listadd_back(&head, current);
 		i++;

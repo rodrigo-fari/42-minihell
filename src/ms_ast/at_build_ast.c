@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   at_build_ast.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeberius@student.42porto.com <aeberius>    +#+  +:+       +#+        */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:57:47 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/18 18:42:12 by aeberius@st      ###   ########.fr       */
+/*   Updated: 2025/05/20 17:42:02 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ t_ast_node	*create_node(t_type type)
 	node->args = NULL;
 	node->left = NULL;
 	node->right = NULL;
+	node->eof_node = NULL;
 	return (node);
 }
 // Helper: Attach redirections as left-deep children to a command node
-static t_ast_node *attach_redirs(t_ast_node *cmd, t_ast_node *redirs)
+static t_ast_node	*attach_redirs(t_ast_node *cmd, t_ast_node *redirs)
 {
 	t_ast_node *last = cmd;
 	if (!redirs)
@@ -52,7 +53,8 @@ static int count_cmd_args(t_token *token)
 	int count = 0;
 	while (token && token->type != TOKEN_PIPE)
 	{
-		if (token->type == TOKEN_CMD || token->type == TOKEN_WORD || token->type == TOKEN_ENV_VAR)
+		if (token->type == TOKEN_CMD || token->type == TOKEN_WORD ||
+			token->type == TOKEN_ENV_VAR)
 			count++;
 		token = token->next;
 	}
@@ -60,7 +62,7 @@ static int count_cmd_args(t_token *token)
 }
 
 // Fill args for command node
-static void fill_cmd_args(t_ast_node *node, t_token **token, int count)
+static void	fill_cmd_args(t_ast_node *node, t_token **token, int count)
 {
 	int i = 0;
 	t_token *curr = *token;
@@ -79,7 +81,7 @@ static void fill_cmd_args(t_ast_node *node, t_token **token, int count)
 }
 
 // Parse a command segment (until pipe or end), collect redirs, then build command node
-static t_ast_node *parse_command(t_token **token)
+static t_ast_node	*parse_command(t_token **token)
 {
 	t_ast_node *redirs = NULL, *last_redir = NULL;
 	t_token *start = *token;
@@ -98,6 +100,7 @@ static t_ast_node *parse_command(t_token **token)
 				{
 					redir->args = ft_calloc(2, sizeof(char *));
 					redir->args[0] = ft_strdup((*token)->value);
+					
 					*token = (*token)->next;
 				}
 			}
@@ -128,11 +131,13 @@ static t_ast_node *parse_command(t_token **token)
 }
 
 // Recursively build the AST for the whole input
-t_ast_node *build_ast(t_token *tokens)
+t_ast_node	*build_ast(t_token *tokens)
 {
-	t_token *token = tokens;
-	t_ast_node *left = parse_command(&token);
+	t_token *token;
+	t_ast_node *left;
 
+	token = tokens;
+	left = parse_command(&token);
 	if (token && token->type == TOKEN_PIPE)
 	{
 		token = token->next;

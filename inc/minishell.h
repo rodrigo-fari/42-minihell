@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/17 19:09:25 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 17:48:49 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,24 @@ extern int	g_exit_status;
 typedef enum e_type
 {
 	TOKEN_WORD = 0,				// For commands and arguments
-	TOKEN_PIPE,				// For '|'
-	TOKEN_REDIR_IN,			// For '<'
-	TOKEN_REDIR_OUT,		// For '>'
-	TOKEN_REDIR_OUT_APPEND,// For '>>'
-	TOKEN_REDIR_ERR,		// For '2>'
-	TOKEN_REDIR_ERR_APPEND,// For '2>>'
-	TOKEN_ENV_VAR,			// For environment variables
-	TOKEN_CMD,				// For command
-	TOKEN_FILENAME,			// For filename
-	TOKEN_HEREDOC			// For heredoc
+	TOKEN_PIPE,					// For '|'
+	TOKEN_REDIR_IN,				// For '<'
+	TOKEN_REDIR_OUT,			// For '>'
+	TOKEN_REDIR_OUT_APPEND,		// For '>>'
+	TOKEN_REDIR_ERR,			// For '2>'
+	TOKEN_REDIR_ERR_APPEND,		// For '2>>'
+	TOKEN_ENV_VAR,				// For environment variables
+	TOKEN_CMD,					// For command
+	TOKEN_FILENAME,				// For filename
+	TOKEN_HEREDOC				// For heredoc
 }	t_type;
 
 //【Definition of token's node content】
 typedef struct s_token
 {
 	t_type				type;
+	bool				eof_inquote;
+	bool				eof_envvar;
 	char				*value;
 	struct s_token		*next;
 }	t_token;
@@ -83,7 +85,7 @@ typedef struct s_ast_node
 	char				**args;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
-    char				*heredoc_file;
+	char				*heredoc_file;
 }	t_ast_node;
 
 //【Definition of environment variable's node content】
@@ -98,14 +100,12 @@ typedef struct s_env
 //【Definition of a general struct, containing pointers to every single other struct】
 typedef struct s_shell
 {
-	t_token		*tokens;
-	t_ast_node	*ast_root;
-	t_env		*env_list;
-	char		**envp;
-	int			heredoc_fd;
+	t_token				*tokens;
+	t_ast_node			*ast_root;
+	t_env				*env_list;
+	char				**envp;
+	int					heredoc_fd;
 }	t_shell;
-
-
 
 void		free_tokens(t_token *token);
 void		free_ast(t_ast_node *node);
@@ -114,7 +114,6 @@ void		free_envp(char **envp);
 void		cleanup_shell(t_shell *shell);
 void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
-void		handle_heredoc_input(const char *delimiter, int fd);
 int			execute_heredoc(t_ast_node *node);
 int			collect_all_heredocs(t_ast_node *node);
 
@@ -218,10 +217,16 @@ int			listsize(t_env *env);
 char		**array_envs(t_env *envs);
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ HEREDOC FUNCTIONS ┃
-//【】
-//【】
-//【】
-//【】
+//【hd_heredoc.c】
+void		handle_heredoc_input(const char *delimiter, int fd, bool doiexpand);
+int			execute_heredoc(t_ast_node *node);
+int			collect_all_heredocs(t_ast_node *node);
+
+//【hd_expander.c】
+void		hd_atributes(t_token *current);
+
+//【hd_utils.c】
+int			ft_snprintf(char *str, size_t size, const char *format, ...);
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ MAIN FUNCTIONS ┃
 //【ms_exec.c】
@@ -266,8 +271,8 @@ char		*append_string_to_string(char *str1, const char *str2);
 
 //【ps_remove_quotes.c】-【5 function limit achived on this file.】
 void		quote_fix(t_token *tokens);
-char		*verify_quotes(char *input);
-char		*replace_values(char *input, char current_quote, bool key, t_env *env);
+char		*verify_quotes(t_token *tmp);
+char		*replace_values(char *input, char quote, bool key, t_token *tmp);
 char		*remove_quotes_and_expand(char *input, t_env *env);
 char		*remove_quotes(char *input);
 
@@ -276,7 +281,7 @@ char		*remove_quotes(char *input);
 void		pipe_child1(int *pipefd, t_ast_node *left, t_env *env);
 void		pipe_child2(int *pipefd, t_ast_node *right, t_env *env);
 void		execute_pipe(t_ast_node *left, t_ast_node *right, t_env *env);
-int         node_has_out_redir(t_ast_node *node);
+int			node_has_out_redir(t_ast_node *node);
 
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ REDIRECT FUNCTIONS ┃

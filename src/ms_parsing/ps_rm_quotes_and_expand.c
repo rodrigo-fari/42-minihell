@@ -14,49 +14,61 @@
 
 void	quote_fix(t_token *tokens)
 {
-	t_token		*temp;
-	char		*new_value;
+	t_token	*tmp;
+	char	*new_value;
 
-	temp = tokens;
-	while (temp)
+	tmp = tokens;
+	while (tmp)
 	{
-		new_value = verify_quotes(temp->value);
-		temp->value = ft_strdup(new_value);
-		free(new_value);
-		temp = temp->next;
+		new_value = verify_quotes(tmp);
+		tmp->value = ft_strdup(new_value);
+		tmp = tmp->next;
+		free (new_value);
 	}
 }
 
-char	*verify_quotes(char *input)
+char	*verify_quotes(t_token *tmp)
 {
 	int		i;
 	char	current_quote;
 	bool	key;
+	char	*input;
 
-	key = false;
 	i = 0;
+	key = false;
 	current_quote = '\0';
+	input = tmp->value;
 	if (input[i] && (input[i] == '\"' || input[i] == '\''))
+	{
 		current_quote = input[i];
+		if (tmp->type == TOKEN_HEREDOC)
+			tmp->eof_inquote = true;
+	}
+	if (input[i] == '$' && tmp->type == TOKEN_HEREDOC)
+		tmp->eof_envvar = true;
 	while (input[i] == current_quote)
 	{
 		key = bool_changer(key);
 		i++;
 	}
-	return (replace_values(input, current_quote, key, get_env(NULL)));
+	return (replace_values(input, current_quote, key, tmp));
 }
 
-char	*replace_values(char *input, char current_quote, bool key, t_env *env)
+char	*replace_values(char *input, char quote, bool key, t_token *tmp)
 {
 	char	*ret_str;
-	
-	if (key == true && current_quote == '\"')
+	t_env	*env;
+
+	env = get_env(NULL);
+	if (tmp->eof_envvar || tmp->eof_inquote)
+		return (ft_strdup(tmp->value));
+	if (key && quote == '\"')
 	{
 		ret_str = remove_quotes_and_expand(input, env);
 		free(input);
 		return (ret_str);
 	}
-	else if (key == true && current_quote == '\'')
+	else if (key && quote == '\'')
 	{
 		ret_str = remove_quotes_and_expand(input, env);
 		free(input);
@@ -67,13 +79,56 @@ char	*replace_values(char *input, char current_quote, bool key, t_env *env)
 	return (ret_str);
 }
 
+static void	append_exit_status(char **ret_str, int *i)
+{
+	char	*tmp;
+	char	*exit_status_str;
+
+	exit_status_str = ft_itoa(g_exit_status);
+	tmp = append_string_to_string(*ret_str, exit_status_str);
+	if (*ret_str)
+		free(*ret_str);
+	*ret_str = tmp;
+	free(exit_status_str);
+	*i += 2;
+}
+
+static void	append_variable(char **ret_str, char *input, int *i, t_env *env)
+{
+	char	*tmp;
+	char	*var_name;
+	char	*var_value;
+
+	(*i)++;
+	var_name = extract_var_name(input, i);
+	var_value = get_env_value(env, var_name);
+	free(var_name);
+	if (var_value)
+	{
+		tmp = append_string_to_string(*ret_str, var_value);
+		if (*ret_str)
+			free(*ret_str);
+		*ret_str = tmp;
+	}
+	else
+	{
+		tmp = append_string_to_string(*ret_str, "");
+		if (*ret_str)
+			free(*ret_str);
+		*ret_str = tmp;
+	}
+}
+
 char	*remove_quotes_and_expand(char *input, t_env *env)
 {
-	int		i = 0;
-	char	quote = '\0';
-	char	*ret_str = NULL;
-	char	*tmp, *var_name, *var_value;
+	int		i;
+	char	quote;
+	char	*ret_str;
+	char	*tmp;
 
+	i = 0;
+	quote = '\0';
+	ret_str = NULL;
 	while (input[i])
 	{
 		if ((input[i] == '\'' || input[i] == '\"') && quote == '\0')
@@ -82,18 +137,10 @@ char	*remove_quotes_and_expand(char *input, t_env *env)
 			quote = '\0', i++;
 		else if (input[i] == '$' && quote != '\'')
 		{
-			if (input[i + 1] == '?') // Check for $?
-			{
-				char *exit_status_str = ft_itoa(g_exit_status); // Convert exit status to string
-				tmp = append_string_to_string(ret_str, exit_status_str);
-				if (ret_str)
-					free(ret_str);
-				ret_str = tmp;
-				if (exit_status_str)
-					free(exit_status_str);
-				i += 2;
-			}
-			else if (!input[i + 1] || (!ft_isalnum(input[i + 1]) && input[i + 1] != '_'))
+			if (input[i + 1] == '?')
+				append_exit_status(&ret_str, &i);
+			else if (!input[i + 1] || (!ft_isalnum(input[i + 1])
+					&& input[i + 1] != '_'))
 			{
 				tmp = append_char_to_string(ret_str, '$');
 				if (ret_str)
@@ -102,26 +149,7 @@ char	*remove_quotes_and_expand(char *input, t_env *env)
 				i++;
 			}
 			else
-			{
-				i++;
-				var_name = extract_var_name(input, &i);
-				var_value = get_env_value(env, var_name);
-				free(var_name);
-				if (var_value)
-				{
-					tmp = append_string_to_string(ret_str, var_value);
-					if (ret_str)
-						free(ret_str);
-					ret_str = tmp;
-				}
-				else
-				{
-					tmp = append_string_to_string(ret_str, "");
-					if (ret_str)
-						free(ret_str);
-					ret_str = tmp;
-				}
-			}
+				append_variable(&ret_str, input, &i, env);
 		}
 		else
 		{
@@ -150,6 +178,8 @@ char	*remove_quotes(char *input)
 		while (input[i] && input[i] != '\"' && input[i] != '\'')
 		{
 			tmp = append_char_to_string(ret_str, input[i]);
+			if (ret_str)
+				free(ret_str);
 			ret_str = tmp;
 			i++;
 		}
