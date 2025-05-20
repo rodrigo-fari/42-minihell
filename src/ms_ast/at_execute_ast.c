@@ -60,6 +60,7 @@ void execute_forked_cmd(t_ast_node *node, t_env *env)
     }
     else if (pid == 0)
     {
+        signal(SIGPIPE, SIG_DFL);
         bi_exec(node->args, env);
         exit(EXIT_SUCCESS);
     }

@@ -33,3 +33,15 @@ int	node_has_in_redir(t_ast_node *node)
 	}
 	return (0);
 }
+
+int node_has_out_redir(t_ast_node *node)
+{
+    while (node)
+    {
+        if (node->type == TOKEN_REDIR_OUT || node->type == TOKEN_REDIR_OUT_APPEND ||
+            node->type == TOKEN_REDIR_ERR || node->type == TOKEN_REDIR_ERR_APPEND)
+            return 1;
+        node = node->right;
+    }
+    return 0;
+}

@@ -24,9 +24,9 @@ int	main(void)
 	env = get_env(env);
 	while (true)
 	{
+        signal(SIGINT, sig_ctrl_c);
+        signal(SIGPIPE, SIG_IGN);
 		env = get_env(NULL);
-		signal(SIGINT, sig_ctrl_c);
-		signal(SIGPIPE, SIG_IGN);
 		input = readline(GREEN"░▒▓█[42]█▓▒░ ");
 		if (!input)
 			break ;
