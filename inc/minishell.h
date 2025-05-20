@@ -41,6 +41,7 @@
 # include <readline/history.h>
 # include <curses.h>
 # include <term.h>
+# include <errno.h>
 # include "../src/ms_libft/libft/libft.h"
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ SUPPORT DEFINITIONS ┃
@@ -115,7 +116,7 @@ void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
 void		handle_heredoc_input(const char *delimiter, int fd);
 int			execute_heredoc(t_ast_node *node);
-void		collect_all_heredocs(t_ast_node *node);
+int			collect_all_heredocs(t_ast_node *node);
 
 
 

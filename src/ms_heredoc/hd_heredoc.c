@@ -32,33 +32,68 @@ void handle_heredoc_input(const char *delimiter, int fd)
 
 int execute_heredoc(t_ast_node *node)
 {
-    int fd;
+    int		fd;
+	pid_t	pid;
+	int		status;
+	struct	sigaction sa_old;
+	struct	sigaction sa_ignore;
 
+	status = 0;
     if (!node || node->type != TOKEN_HEREDOC)
+	{
         return (-1);
-    fd = open(node->heredoc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-    if (fd < 0)
-        return (-1);
-    handle_heredoc_input(node->args[0], fd);
-    close(fd);
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		fd = open(node->heredoc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (fd < 0)
+        	return (-1);
+		handle_heredoc_input(node->args[0], fd);
+		close(fd);
+		exit(0);
+	}
+	else if (pid > 0)
+	{
+		sigaction(SIGINT, NULL, &sa_old);
+		sa_ignore.sa_handler = SIG_IGN;
+		sigemptyset(&sa_ignore.sa_mask);
+		sa_ignore.sa_flags = 0;
+		sigaction(SIGINT, &sa_ignore, NULL);
+        waitpid(pid, &status, 0);
+		sigaction(SIGINT, &sa_old, NULL);
+		waitpid(pid, &status, 0);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(1, "\n", 1);
+			g_exit_status = 130;
+			return (-1);
+		}
+	}
     return (0);
 }
 
-void collect_all_heredocs(t_ast_node *node)
+int	collect_all_heredocs(t_ast_node *node)
 {
-    static int heredoc_count = 0;
-    char filename[64];
+    static int	heredoc_count;
+    char		filename[64];
 
+	heredoc_count = 0;
     if (!node)
-        return;
+        return (0);
     if (node->type == TOKEN_HEREDOC)
     {
         snprintf(filename, sizeof(filename), ".heredoc_%d_%d", getpid(), heredoc_count++);
         if (node->heredoc_file)
             free(node->heredoc_file);
         node->heredoc_file = strdup(filename);
-        execute_heredoc(node);
+        if (execute_heredoc(node) == -1)
+			return (-1);
     }
-    collect_all_heredocs(node->left);
-    collect_all_heredocs(node->right);
+    if (collect_all_heredocs(node->left) == -1)
+		return (-1);
+    if (collect_all_heredocs(node->right) == -1)
+		return (-1);
+	return (0);
 }

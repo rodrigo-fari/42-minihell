@@ -45,6 +45,10 @@ void execute_forked_cmd(t_ast_node *node, t_env *env)
 {
     pid_t pid;
     int status;
+	int sig;
+	struct	sigaction sa_old;
+	struct	sigaction sa_ignore;
+
 
     if (!node->args || !node->args[0])
         return;
@@ -61,14 +65,31 @@ void execute_forked_cmd(t_ast_node *node, t_env *env)
     else if (pid == 0)
     {
         signal(SIGPIPE, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
         bi_exec(node->args, env);
         exit(EXIT_SUCCESS);
     }
     else
     {
+		sigaction(SIGINT, NULL, &sa_old);
+		sa_ignore.sa_handler = SIG_IGN;
+		sigemptyset(&sa_ignore.sa_mask);
+		sa_ignore.sa_flags = 0;
+		sigaction(SIGINT, &sa_ignore, NULL);
         waitpid(pid, &status, 0);
+		sigaction(SIGINT, &sa_old, NULL);
         if (WIFEXITED(status))
             g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			sig = WTERMSIG(status);
+			if (sig == SIGQUIT)
+				write( 1, "Quit (core dumped)\n", 19);
+			else if (sig == SIGINT)
+				write(1, "\n", 1);
+			g_exit_status = 128 + sig;
+		}
     }
 }
 

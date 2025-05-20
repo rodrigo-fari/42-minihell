@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 int	g_exit_status = 0;
-
+//CTRL C NO HEARDOC SHOULD QUIT
 int	main(void)
 {
 	t_env		*env;
@@ -26,10 +26,15 @@ int	main(void)
 	{
         signal(SIGINT, sig_ctrl_c);
         signal(SIGPIPE, SIG_IGN);
-		env = get_env(NULL);
+        signal(SIGQUIT, SIG_IGN);
+        env = get_env(NULL);
 		input = readline(GREEN"░▒▓█[42]█▓▒░ ");
 		if (!input)
+		{
+			write(1, "\n", 1);
+			free_env_list(env);
 			break ;
+		}
 		add_history(input);
 		env = get_env(NULL);
 		ms_exec(input, env);
