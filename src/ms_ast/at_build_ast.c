@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:57:47 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 17:42:02 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:08:10 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_ast_node	*create_node(t_type type)
 	node->args = NULL;
 	node->left = NULL;
 	node->right = NULL;
-	node->eof_node = NULL;
 	return (node);
 }
 // Helper: Attach redirections as left-deep children to a command node

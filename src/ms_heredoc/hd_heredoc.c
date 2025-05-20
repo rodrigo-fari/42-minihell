@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 17:59:29 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:10:07 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	handle_heredoc_input(const char *delimiter, int fd, bool doiexpand)
 			break;
 		}
 		if (ft_strchr(line, '$') && doiexpand)
-			line = var_expand(line + 1);
+			line = expand_vars(line);
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
 		free(line);

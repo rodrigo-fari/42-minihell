@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 17:48:49 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:10:30 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,8 @@ int			collect_all_heredocs(t_ast_node *node);
 
 //【hd_expander.c】
 void		hd_atributes(t_token *current);
+char		*var_expand(char *input);
+char		*expand_vars(char *input);
 
 //【hd_utils.c】
 int			ft_snprintf(char *str, size_t size, const char *format, ...);
@@ -243,9 +245,6 @@ int			count_args(char **commands);
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ PARSING FUNCTIONS ┃
 //【ps_error.c】
 void		ps_error(char *str);
-
-//【ps_expand_variable.c】
-char		*var_expand(char *input);
 
 //【ps_parsing.c】
 bool		ps_parsing(char **commands, int i);

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 15:59:46 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 18:58:20 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	main(void)
 	env = get_env(env);
 	while (true)
 	{
-        signal(SIGINT, sig_ctrl_c);
-        signal(SIGPIPE, SIG_IGN);
-        signal(SIGQUIT, SIG_IGN);
-        env = get_env(NULL);
+		signal(SIGINT, sig_ctrl_c);
+		signal(SIGPIPE, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		env = get_env(NULL);
 		input = readline(GREEN"░▒▓█[42]█▓▒░ "RESET);
 		if (!input)
 		{
