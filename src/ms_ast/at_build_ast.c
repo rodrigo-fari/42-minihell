@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:57:47 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 19:08:10 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:36:01 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static t_ast_node	*parse_command(t_token **token)
 			*token = (*token)->next;
 			if (redir->type == TOKEN_HEREDOC)
 			{
+				hd_flag_definer(redir, (*token));
 				if (*token)
 				{
 					redir->args = ft_calloc(2, sizeof(char *));
@@ -146,4 +147,17 @@ t_ast_node	*build_ast(t_token *tokens)
 		return pipe;
 	}
 	return left;
+}
+
+void	hd_flag_definer(t_ast_node *node, t_token *token)
+{
+	if (token->eof_envvar)
+		node->eof_envvar = true;
+	if (token->eof_inquote)
+		node->eof_inquote = true;
+	else
+	{
+		node->eof_envvar = false;
+		node->eof_inquote = false;
+	}
 }

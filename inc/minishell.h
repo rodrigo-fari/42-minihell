@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 19:10:30 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:36:39 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,8 @@ typedef struct s_token
 typedef struct s_ast_node
 {
 	t_type				type;
+	bool				eof_inquote;
+	bool				eof_envvar;
 	char				**args;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
@@ -120,12 +122,14 @@ int			collect_all_heredocs(t_ast_node *node);
 
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ABSTRACT SYNTAX TREE FUNCTIONS ┃
-//【at_build_ats.c】-【5 function limit achived on this file.】
+//!【at_build_ats.c】-【5 function limit achived on this file.】 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 t_ast_node	*create_node(t_type type);
 void		handle_pipe(t_ast_node **root, t_ast_node *new_node, t_token **token);
-void		handle_heredoc(t_ast_node **root, t_token **token);
+// void		handle_heredoc(t_ast_node **root, t_token **token);
 void		handle_redir(t_ast_node **root, t_token **token);
 t_ast_node	*build_ast(t_token *tokens);
+void		hd_flag_definer(t_ast_node *node, t_token *token);
+
 
 //【at_execute_ast.c】
 int			validate_cmd(char *cmd);

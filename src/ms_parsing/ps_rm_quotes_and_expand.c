@@ -60,7 +60,7 @@ char	*replace_values(char *input, char quote, bool key, t_token *tmp)
 	t_env	*env;
 
 	env = get_env(NULL);
-	if (tmp->eof_envvar || tmp->eof_inquote)
+	if (tmp->eof_envvar)
 		return (ft_strdup(tmp->value));
 	if (key && quote == '\"')
 	{

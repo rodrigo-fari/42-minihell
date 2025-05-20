@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 19:10:07 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/20 19:37:46 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	handle_heredoc_input(const char *delimiter, int fd, bool doiexpand)
 		free(line);
 	}
 }
-int execute_heredoc(t_ast_node *node)
+
+int	execute_heredoc(t_ast_node *node)
 {
 	int		fd;
 	pid_t	pid;
@@ -49,7 +50,10 @@ int execute_heredoc(t_ast_node *node)
 		fd = open(node->heredoc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			return (-1);
-		handle_heredoc_input(node->args[0], fd, true);
+		if (node->eof_inquote)
+			handle_heredoc_input(node->args[0], fd, false);
+		else
+			handle_heredoc_input(node->args[0], fd, true);
 		close(fd);
 		exit(0);
 	}
@@ -83,6 +87,7 @@ int	collect_all_heredocs(t_ast_node *node)
 		return (0);
 	if (node->type == TOKEN_HEREDOC)
 	{
+		
 		ft_snprintf(filename, sizeof(filename), ".heredoc_%d_%d",
 		getpid(), heredoc_count++);
 		if (node->heredoc_file)
