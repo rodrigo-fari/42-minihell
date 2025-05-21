@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   re_execute_redirection.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeberius <aeberius@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:04:14 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/17 15:52:11 by aeberius         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:00:46 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,14 @@ void	restore_std_fds(int in, int out, int err)
 void	child_process(t_ast_node *node, t_env *env)
 {
 	t_ast_node	*cmd;
+	t_shell *shell;
 
+	shell = get_shell();
 	if (!apply_redirections(node, 0))
+	{
+		cleanup_shell(shell, 1);
 		exit(EXIT_FAILURE);
+	}
 	cmd = find_command_node(node);
 	if (cmd && cmd->args && cmd->args[0])
 	{
@@ -54,6 +59,7 @@ void	child_process(t_ast_node *node, t_env *env)
 		else
 			bi_exec(cmd->args, env);
 	}
+	cleanup_shell(shell, 1);
 	exit(g_exit_status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 11:18:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/17 18:55:26 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:58:01 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	bi_echo(t_token *tmp)
 	bool	flag;
 
 	flag = true;
-	if (!tmp->value)
+	if (!tmp->value[0])
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		return ;

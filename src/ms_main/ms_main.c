@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 18:58:20 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:54:45 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(void)
 		signal(SIGPIPE, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		env = get_env(NULL);
-		input = readline(GREEN"░▒▓█[42]█▓▒░ "RESET);
+		input = readline("42-Minihell$ ");
 		if (!input)
 		{
 			write(1, "\n", 1);

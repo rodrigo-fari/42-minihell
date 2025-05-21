@@ -27,7 +27,7 @@ RESET				= "\033[0m"
 
 #===================================================================================| Commands |
 
-all:				$(NAME)
+all:				$(NAME) animate
 
 $(NAME): 			$(OBJS) $(LIBFT)
 					@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeberius <aeberius@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:18:54 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/17 15:51:05 by aeberius         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:00:29 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,9 @@ char	*resolve_command_path(const char *cmd, t_env *env)
 
 void	handle_builtin_or_empty(char **commands, t_env *env)
 {
+	t_shell *shell;
+
+	shell = get_shell();
 	while (commands[0] && commands[0][0] == '\0')
 		commands++;
 	if (!commands[0] || commands[0][0] == '\0')
@@ -73,15 +76,17 @@ void	handle_builtin_or_empty(char **commands, t_env *env)
 	if (is_builtin(commands[0]))
 	{
 		execute_builtin(commands, env, NULL);
+		cleanup_shell(shell, 1);
 		exit(0);
 	}
 }
 
-void	handle_command_not_found(char *command)
+void	handle_command_not_found(char *command, t_shell *shell)
 {
 	ft_putstr_fd("Minishell: ", STDERR_FILENO);
 	ft_putstr_fd(command, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	g_exit_status = 127;
+	cleanup_shell(shell, 1);
 	exit(g_exit_status);
 }

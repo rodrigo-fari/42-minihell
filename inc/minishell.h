@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 19:36:39 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:25:35 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void		free_tokens(t_token *token);
 void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
 void		free_envp(char **envp);
-void		cleanup_shell(t_shell *shell);
+void		cleanup_shell(t_shell *shell, int flag);
 void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
 int			execute_heredoc(t_ast_node *node);
@@ -134,7 +134,7 @@ void		hd_flag_definer(t_ast_node *node, t_token *token);
 //【at_execute_ast.c】
 int			validate_cmd(char *cmd);
 void		execute_forked_cmd(t_ast_node *node, t_env *env);
-void		execute_ast(t_ast_node *node, t_env *env, t_token *tokens);
+void		execute_ast(t_ast_node *node, t_env *env, t_token *tokens, int flag);
 void		free_ast(t_ast_node *node);
 
 //【at_utils_ast.c】
@@ -163,16 +163,18 @@ void		bi_error(char *str);
 
 //【bi_exec_2.c】
 void		handle_directory_error(char *command);
-void		check_command_path(char *command_path, char **commands);
+void		check_command_path(char *command_path, char **commands, t_shell *shell);
 void		bi_exec(char **commands, t_env *env);
 void		execute_builtin(char **commands, t_env *env, t_token *tokens);
+void		execute_builtin_child(char **commands, t_env *env, t_token *tokens);
+
 
 //【bi_exec.c】-【5 function limit achived on this file.】
 char		*check_direct_path(const char *cmd);
 char		*find_executable(char **paths, const char *cmd);
 char		*resolve_command_path(const char *cmd, t_env *env);
 void		handle_builtin_or_empty(char **commands, t_env *env);
-void		handle_command_not_found(char *command);
+void		handle_command_not_found(char *command, t_shell *shell);
 
 //【bi_exit.c】-【5 function limit achived on this file.】
 void		bi_exit(t_token *token);

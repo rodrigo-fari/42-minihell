@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:06:52 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/17 15:57:28 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:49:05 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ms_free(t_env *env, char *input, char **commands, t_token *tokens)
 	return ;
 }
 
-void	cleanup_shell(t_shell *shell)
+void	cleanup_shell(t_shell *shell, int flag)
 {
 	if (shell->tokens)
 		free_tokens(shell->tokens);
@@ -37,7 +37,7 @@ void	cleanup_shell(t_shell *shell)
 		cleanup_heredocs(shell->ast_root);
 		free_ast(shell->ast_root);
 	}
-	if (shell->env_list)
+	if (shell->env_list && flag == 1)
 		free_env_list(shell->env_list);
 	if (shell->envp)
 		free_envp(shell->envp);
