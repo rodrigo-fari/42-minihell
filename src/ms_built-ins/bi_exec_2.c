@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/22 01:56:38 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:04:56 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 
 void	bi_exec(char **commands, t_env *env)
 {
-	char	**splitted_envs;
-	char	*command_path;
+	char	**splitted_envs = NULL;
+	char	*command_path = NULL;
 	t_shell	*shell;
 
 	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
@@ -62,29 +62,6 @@ void	bi_exec(char **commands, t_env *env)
 	cleanup_shell(shell, 1);
 	exit (g_exit_status);
 }
-
-// void	bi_exec(char **commands, t_env *env)
-// {
-// 	char	*command_path;
-// 	t_shell *shell;
-
-// 	shell = get_shell();
-// 	handle_builtin_or_empty(commands, env);
-// 	command_path = resolve_command_path(commands[0], env);
-// 	if (!command_path)
-// 		handle_command_not_found(commands[0], shell);
-// 	check_command_path(command_path, commands, shell);
-// 	env = get_env(NULL);
-// 	execve(command_path, commands, array_envs(env));
-// 	if (ft_strcmp(commands[0], "") != 0)
-// 	{
-// 		perror("execve");
-// 		g_exit_status = 1;
-// 	}
-// 	free (command_path);
-// 	cleanup_shell(shell, 1);
-// 	exit(g_exit_status);
-// }
 
 void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 {

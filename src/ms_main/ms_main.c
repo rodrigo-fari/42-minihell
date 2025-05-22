@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/21 17:54:45 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:31:30 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,17 @@
 
 int	g_exit_status = 0;
 //CTRL C NO HEARDOC SHOULD QUIT
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
 	t_env		*env;
 	char		*input;
-	extern char	**environ;
 
-	env = env_to_struct(environ);
+	if (ac != 1 || av[1])
+	{
+		write(2, "Error: Too many arguments\n", 26);
+		return (1);
+	}
+	env = env_to_struct(envp);
 	env = get_env(env);
 	while (true)
 	{
