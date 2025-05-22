@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:13:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/21 17:50:41 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:53:13 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,35 @@
 
 void	bi_exit(t_token *token)
 {
+	int	no_exit;
+
+	no_exit = check_exit_arguments(token);
 	ft_putendl_fd("exit", 1);
 	if (tk_listsize(token) == 1)
-		define_exit_status(NULL);
-	else if (!check_exit_arguments(token))
-		define_exit_status(NULL);
+		define_exit_status(NULL, false);
+	else if (no_exit == 2)
+		return ;
+	else if (no_exit == 0)
+		define_exit_status(NULL, false);
 	else if (!check_exit_signals(token))
-		define_exit_status(NULL);
+		define_exit_status(NULL, false);
 	else
-		define_exit_status(token->next->value);
+		define_exit_status(token->next->value, false);
 }
 
-void	define_exit_status(char *exit_status)
+void	define_exit_status(char *exit_status, bool flag)
 {
 	long		exit_lnumber;
 
-	if (!exit_status)
+	if (!exit_status && !flag)
 	{
 		cleanup_shell(get_shell(), 1);
 		exit(g_exit_status);
 	}
-	if (ft_atol(exit_status) != ft_atod(exit_status))
+	if (ft_atol(exit_status) != ft_atod(exit_status) && !flag)
 	{
 		g_exit_status = 2;
+		bi_error("Minishell: exit: numeric argument required\n");
 		cleanup_shell(get_shell(), 1);
 		exit (g_exit_status);
 	}
@@ -48,20 +54,20 @@ void	define_exit_status(char *exit_status)
 	exit (g_exit_status);
 }
 
-bool	check_exit_arguments(t_token *token)
+int	check_exit_arguments(t_token *token)
 {
-	if (tk_listsize(token) > 2)
+	if (tk_listsize(token) >= 2)
 	{
 		bi_error("Minishell: exit: too many arguments\n");
 		g_exit_status = 1;
-		return (false);
+		return (2);
 	}
 	if (tk_listsize(token) == 2 && ft_strcmp(token->next->value, "--") == 0)
 	{
 		g_exit_status = 2;
-		return (false);
+		return (0);
 	}
-	return (true);
+	return (1);
 }
 
 bool	check_exit_signals(t_token *token)
@@ -82,7 +88,7 @@ bool	check_exit_signals(t_token *token)
 			return (false);
 		while (token->next->value[i] && (ft_isdigit(token->next->value[i])))
 			i++;
-		if (token->next->value[i])
+		if (token->next->value[i] || tk_listsize(token) >= 2)
 		{
 			bi_error("Minishell: exit: numeric argument required\n");
 			g_exit_status = 2;

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/21 18:25:35 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:53:40 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,8 @@ void		handle_command_not_found(char *command, t_shell *shell);
 
 //【bi_exit.c】-【5 function limit achived on this file.】
 void		bi_exit(t_token *token);
-void		define_exit_status(char *exit_status);
-bool		check_exit_arguments(t_token *token);
+void		define_exit_status(char *exit_status, bool flag);
+int			check_exit_arguments(t_token *token);
 bool		check_exit_signals(t_token *token);
 bool		check_signal_quantity(int qnt);
 

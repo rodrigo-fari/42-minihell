@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 19:37:46 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 21:16:00 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,6 @@ int	collect_all_heredocs(t_ast_node *node)
 		return (0);
 	if (node->type == TOKEN_HEREDOC)
 	{
-		
-		ft_snprintf(filename, sizeof(filename), ".heredoc_%d_%d",
-		getpid(), heredoc_count++);
 		if (node->heredoc_file)
 			free(node->heredoc_file);
 		node->heredoc_file = ft_strdup(filename);
