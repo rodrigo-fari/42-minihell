@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/22 21:16:00 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 22:30:01 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	handle_heredoc_input(const char *delimiter, int fd, bool doiexpand)
 
 	while (1)
 	{
-		line = readline(RED"helldoc> "RESET);
-		if (!line || ft_cstrcmp(line, delimiter) == 0)
+		line = readline("> ");
+		if (!line || ft_cstrcmp(line, delimiter) == 0 ||
+			ft_cstrcmp(line, "") == 0)
 		{
 			free(line);
 			break;
