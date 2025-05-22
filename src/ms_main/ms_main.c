@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/22 18:31:30 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:56:47 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGPIPE, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		env = get_env(NULL);
-		input = readline("42-Minihell$ ");
+		input = readline(GREEN"42-Minihell$ "RED);
 		if (!input)
 		{
 			write(1, "\n", 1);
