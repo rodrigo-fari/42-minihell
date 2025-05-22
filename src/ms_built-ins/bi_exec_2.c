@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/21 19:01:51 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/22 00:27:52 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,27 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 
 void	bi_exec(char **commands, t_env *env)
 {
+	char	**splitted_envs;
 	char	*command_path;
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = get_shell();
+	env = get_env(NULL);
 	handle_builtin_or_empty(commands, env);
+	if (ft_strcmp(commands[0], "") == 0)
+	{
+		g_exit_status = 1;
+		cleanup_shell(shell, 1);
+		exit (g_exit_status);
+	}
+	splitted_envs = array_envs(env);
 	command_path = resolve_command_path(commands[0], env);
 	if (!command_path)
 		handle_command_not_found(commands[0], shell);
 	check_command_path(command_path, commands, shell);
-	env = get_env(NULL);
-	execve(command_path, commands, array_envs(env));
-	if (ft_strcmp(commands[0], "") != 0)
-	{
-		perror("execve");
-		g_exit_status = 1;
-	}
+	execve(command_path, commands, splitted_envs);
 	free (command_path);
+	free (splitted_envs);
 	cleanup_shell(shell, 1);
 	exit(g_exit_status);
 }
@@ -81,31 +85,3 @@ void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 	else if (ft_strcmp(commands[0], "export") == 0)
 		bi_export(env, commands);
 }
-
-// void	execute_builtin_child(char **commands, t_env *env, t_token *tokens)
-// {
-// 	t_token	*token;
-// 	t_shell *shell;
-
-// 	env = get_env(NULL);
-// 	if (ft_strcmp(commands[0], "echo") == 0)
-// 	{
-// 		token = token_to_struct(commands);
-// 		bi_echo(token);
-// 		free_tokens(token);
-// 	}
-// 	else if (ft_strcmp(commands[0], "pwd") == 0)
-// 		bi_pwd();
-// 	else if (ft_strcmp(commands[0], "exit") == 0)
-// 		bi_exit(tokens);
-// 	else if (ft_strcmp(commands[0], "env") == 0)
-// 		print_env(env);
-// 	else if (ft_strcmp(commands[0], "cd") == 0)
-// 		bi_cd(commands, env);
-// 	else if (ft_strcmp(commands[0], "unset") == 0)
-// 		bi_unset(commands, env);
-// 	else if (ft_strcmp(commands[0], "export") == 0)
-// 		bi_export(env, commands);
-// 	shell = get_shell();
-// 	cleanup_shell(shell, 1);
-// }
