@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:38:24 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/11 21:08:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:23:55 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,11 @@ void	update_pwd(t_env *env, char *old_pwd)
 {
 	char	*pwd;
 	t_env	*tmp;
+	int		found;
 
 	pwd = getcwd(NULL, 0);
 	tmp = env;
+	found = 0;
 	while (tmp != NULL)
 	{
 		if (ft_strcmp(tmp->key, "PWD") == 0)
@@ -104,8 +106,11 @@ void	update_pwd(t_env *env, char *old_pwd)
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(old_pwd);
+			found = 1;
 		}
 		tmp = tmp->next;
 	}
+	if (found == 0)
+		env_add(env, "OLDPWD", old_pwd, true);
 	free(pwd);
 }

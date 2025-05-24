@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:45:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 16:15:16 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:06:04 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*hd_remove_quotes(char *input)
 		return_var[i - 1] = input[i];
 		i++;
 	}
-	return_var[i] = '\0';
+	return_var[i - 1] = '\0';
 	free (input);
 	return (return_var);
 }

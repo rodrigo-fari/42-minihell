@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 16:15:20 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:22:50 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,10 @@ typedef enum e_type
 	TOKEN_FILENAME,				// For filename
 	TOKEN_HEREDOC				// For heredoc
 }	t_type;
+
+char	*get_current_directory(char *current_wd);
+char	*get_own_env(char *env_name);
+
 
 //【Definition of token's node content】
 typedef struct s_token

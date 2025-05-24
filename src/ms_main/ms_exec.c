@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:19:43 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 16:14:11 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:17:01 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ms_exec(char *input, t_env *env)
 	t_ast_node	*ast_root;
 	t_shell		*shell;
 
+	get_current_directory(getcwd(NULL,0));
 	commands = tk_splitter(input, 0, 0);
 	if (!ps_parsing(commands, 0))
 	{
@@ -27,11 +28,11 @@ void	ms_exec(char *input, t_env *env)
 	}
 	tokens = token_to_struct(commands);
 	free_splits(commands);
-	printf("\n↓ PRE-REMOVE_QUOTES ↓\n");
-	print_tokens(tokens);
+	// printf("\n↓ PRE-REMOVE_QUOTES ↓\n");
+	// print_tokens(tokens);
 	quote_fix(tokens);
-	printf("\n\n↓ AFTER-REMOVE_QUOTES ↓\n");
-	print_tokens(tokens);
+	// printf("\n\n↓ AFTER-REMOVE_QUOTES ↓\n");
+	// print_tokens(tokens);
 	ast_root = build_ast(tokens);
 	shell = get_shell();
 	shell->tokens = tokens;
