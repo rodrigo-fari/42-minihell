@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:19:43 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 17:17:01 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:28:18 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@ void	ms_exec(char *input, t_env *env)
 	t_token		*tokens;
 	t_ast_node	*ast_root;
 	t_shell		*shell;
-
-	get_current_directory(getcwd(NULL,0));
+	char		*cwd;
+	
+	cwd = getcwd(NULL, 0);
+	get_current_directory(cwd);
+	free(cwd);
 	commands = tk_splitter(input, 0, 0);
 	if (!ps_parsing(commands, 0))
 	{

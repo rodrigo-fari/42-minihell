@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/22 22:30:01 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 19:49:28 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	execute_heredoc(t_ast_node *node)
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		if (!node->heredoc_file)
 		fd = open(node->heredoc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			return (-1);
@@ -56,6 +57,7 @@ int	execute_heredoc(t_ast_node *node)
 		else
 			handle_heredoc_input(node->args[0], fd, true);
 		close(fd);
+		cleanup_shell(get_shell(), 1);
 		exit(0);
 	}
 	else if (pid > 0)
@@ -83,14 +85,16 @@ int	collect_all_heredocs(t_ast_node *node)
 	static int	heredoc_count;
 	char		filename[64];
 
-	heredoc_count = 0;
 	if (!node)
 		return (0);
 	if (node->type == TOKEN_HEREDOC)
 	{
+		ft_snprintf(filename, sizeof(filename), ".heredoc_tmp_%d", heredoc_count++);
 		if (node->heredoc_file)
 			free(node->heredoc_file);
 		node->heredoc_file = ft_strdup(filename);
+		if (!node->heredoc_file)
+			return (-1);
 		if (execute_heredoc(node) == -1)
 			return (-1);
 	}

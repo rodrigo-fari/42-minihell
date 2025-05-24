@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 20:41:20 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 14:50:41 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:53:07 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int		ft_toupper(int c);
 int		ft_isspace(int c);
 int		free_splits(char **line);
 int		ft_atoi(const char *nptr);
+int		ft_array_size(char **array);
 int		ft_strnlen(char *str, int c);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_matrix_finder(char *str, int c);
