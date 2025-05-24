@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/22 21:53:40 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:15:20 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,8 @@ void		handle_command_not_found(char *command, t_shell *shell);
 
 //【bi_exit.c】-【5 function limit achived on this file.】
 void		bi_exit(t_token *token);
-void		define_exit_status(char *exit_status, bool flag);
-int			check_exit_arguments(t_token *token);
+void		define_exit_status(char *exit_status);
+bool		check_exit_arguments(t_token *token);
 bool		check_exit_signals(t_token *token);
 bool		check_signal_quantity(int qnt);
 
@@ -235,6 +235,8 @@ char		*expand_vars(char *input);
 
 //【hd_utils.c】
 int			ft_snprintf(char *str, size_t size, const char *format, ...);
+char		*hd_remove_quotes(char *input);
+
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ MAIN FUNCTIONS ┃
 //【ms_exec.c】
@@ -247,6 +249,8 @@ void		ms_free(t_env *env, char *input, char **commands, t_token *tokens);
 //【ms_utils.c】
 void		ms_print_fd(char *str, int fd);
 int			count_args(char **commands);
+void		shlvl_warning(void);
+
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ PARSING FUNCTIONS ┃
 //【ps_error.c】
@@ -274,12 +278,14 @@ char		*extract_var_name(char *input, int *i);
 char		*get_env_value(t_env *env, char *var_name);
 char		*append_string_to_string(char *str1, const char *str2);
 
-//【ps_remove_quotes.c】-【5 function limit achived on this file.】
+//!【ps_remove_quotes.c】-【5 function limit achived on this file.】 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 void		quote_fix(t_token *tokens);
 char		*verify_quotes(t_token *tmp);
 char		*replace_values(char *input, char quote, bool key, t_token *tmp);
 char		*remove_quotes_and_expand(char *input, t_env *env);
 char		*remove_quotes(char *input);
+void		eof_quote_remove(t_token *tokens);
+
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ PIPELINE FUNCTIONS ┃
 //【pp_execute_pipe.c】

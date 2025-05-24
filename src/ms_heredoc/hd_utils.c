@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:45:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 17:41:09 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 16:15:16 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,27 @@ int	ft_snprintf(char *str, size_t size, const char *format, ...)
 		}
 	}
 	if (size > 0) *dest = '\0';
-	va_end(args);
+	va_end (args);
 	return (total);
+}
+
+char	*hd_remove_quotes(char *input)
+{
+	char	*return_var;
+	int		i;
+
+	return_var = NULL;
+	i = 1;
+	return_var = malloc(sizeof(char) * (ft_strlen(input) - 1));
+	printf("Tamanho de str = %lu\n", (ft_strlen(input) - 1));
+	if (!return_var)
+		return (NULL);
+	while (input[i] && (unsigned long)i < (ft_strlen(input) - 1))
+	{
+		return_var[i - 1] = input[i];
+		i++;
+	}
+	return_var[i] = '\0';
+	free (input);
+	return (return_var);
 }

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 13:24:22 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/03/18 13:34:57 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/23 21:52:01 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*ft_charjoin(char *str, char c)
 
 	len = 0;
 	if (str)
-		len = strlen(str);
+		len = ft_strlen(str);
 	result = (char *)malloc((len + 2) * sizeof(char));
 	if (!result)
 		return (NULL);

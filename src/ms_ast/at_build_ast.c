@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:57:47 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 19:36:01 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/23 18:35:25 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_ast_node	*attach_redirs(t_ast_node *cmd, t_ast_node *redirs)
 {
 	t_ast_node *last = cmd;
 	if (!redirs)
-		return cmd;
+		return (cmd);
 	while (redirs)
 	{
 		t_ast_node *next = redirs->right;

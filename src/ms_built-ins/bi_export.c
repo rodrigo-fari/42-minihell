@@ -37,10 +37,13 @@ void	process_key_value(t_env *env, char *key, char *value, bool has_equal)
 		handle_invalid_key(key, value);
 		return ;
 	}
-	if (value == NULL)
-		env_update(env, key, "", has_equal);
-	else
-		env_update(env, key, value, has_equal);
+	if (has_equal)
+	{
+		if (value == NULL)
+			env_update(env, key, "", has_equal);
+		else
+			env_update(env, key, value, has_equal);
+	}
 	free(key);
 	free(value);
 }

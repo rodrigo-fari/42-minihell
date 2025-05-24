@@ -20,10 +20,20 @@ void	quote_fix(t_token *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
+		eof_quote_remove(tmp);
 		new_value = verify_quotes(tmp);
 		tmp->value = ft_strdup(new_value);
 		tmp = tmp->next;
 		free (new_value);
+	}
+}
+
+void	eof_quote_remove(t_token *tokens)
+{
+	if (tokens->type == TOKEN_HEREDOC)
+	{
+		if (tokens->next->eof_envvar && tokens->next->eof_inquote)
+			tokens->next->value = hd_remove_quotes(tokens->next->value);
 	}
 }
 
