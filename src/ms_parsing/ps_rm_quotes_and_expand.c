@@ -28,15 +28,6 @@ void	quote_fix(t_token *tokens)
 	}
 }
 
-void	eof_quote_remove(t_token *tokens)
-{
-	if (tokens->type == TOKEN_HEREDOC)
-	{
-		if (tokens->next->eof_envvar && tokens->next->eof_inquote)
-			tokens->next->value = hd_remove_quotes(tokens->next->value);
-	}
-}
-
 char	*verify_quotes(t_token *tmp)
 {
 	int		i;
@@ -69,21 +60,11 @@ char	*replace_values(char *input, char quote, bool key, t_token *tmp)
 	char	*ret_str;
 	t_env	*env;
 
+	(void)quote;
+	(void)key;
 	env = get_env(NULL);
 	if (tmp->eof_envvar)
 		return (ft_strdup(tmp->value));
-	if (key && quote == '\"')
-	{
-		ret_str = remove_quotes_and_expand(input, env);
-		free(input);
-		return (ret_str);
-	}
-	else if (key && quote == '\'')
-	{
-		ret_str = remove_quotes_and_expand(input, env);
-		free(input);
-		return (ret_str);
-	}
 	ret_str = remove_quotes_and_expand(input, env);
 	free(input);
 	return (ret_str);
@@ -139,6 +120,7 @@ char	*remove_quotes_and_expand(char *input, t_env *env)
 	i = 0;
 	quote = '\0';
 	ret_str = NULL;
+	env = get_env(NULL);
 	while (input[i])
 	{
 		if ((input[i] == '\'' || input[i] == '\"') && quote == '\0')

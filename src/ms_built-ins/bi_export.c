@@ -81,11 +81,14 @@ bool	is_valid_key(char *key)
 {
 	int	i;
 
-	if (!key || key[0] == '=' || !ft_isalpha(key[0]))
+	if (!key || key[0] != '_')
 	{
-		bi_error("Minishell: export: not a valid identifier\n");
-		g_exit_status = 1;
-		return (false);
+		if (key[0] == '=' || !ft_isalpha(key[0]))
+		{
+			bi_error("Minishell: export: not a valid identifier\n");
+			g_exit_status = 1;
+			return (false);
+	}
 	}
 	i = 1;
 	while (key[i] != '\0')

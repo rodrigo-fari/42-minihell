@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:45:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 17:06:04 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:54:27 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	ft_itoa_buf(int n, char *buf, size_t size) 
 {
 	int		len = 0;
-	char	tmp[12]; // Enough for INT_MIN (-2147483648)
+	char	tmp[12];
 	int		i = 0;
 
 	if (n == 0) 
@@ -102,7 +102,6 @@ char	*hd_remove_quotes(char *input)
 	return_var = NULL;
 	i = 1;
 	return_var = malloc(sizeof(char) * (ft_strlen(input) - 1));
-	printf("Tamanho de str = %lu\n", (ft_strlen(input) - 1));
 	if (!return_var)
 		return (NULL);
 	while (input[i] && (unsigned long)i < (ft_strlen(input) - 1))
@@ -113,4 +112,13 @@ char	*hd_remove_quotes(char *input)
 	return_var[i - 1] = '\0';
 	free (input);
 	return (return_var);
+}
+
+void	eof_quote_remove(t_token *tokens)
+{
+	if (tokens->type == TOKEN_HEREDOC)
+	{
+		if (tokens->next->eof_envvar && tokens->next->eof_inquote)
+			tokens->next->value = hd_remove_quotes(tokens->next->value);
+	}
 }
