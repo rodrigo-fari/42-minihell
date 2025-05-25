@@ -64,7 +64,6 @@ norm:
 val:				re
 					valgrind --leak-check=full \
 						--show-leak-kinds=all -s \
-						--track-fds=yes \
 						--suppressions=readline_supressor ./$(NAME)
 
 # Colors

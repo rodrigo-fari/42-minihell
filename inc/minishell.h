@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/25 22:37:44 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 01:19:08 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,58 +14,13 @@
 # define MINISHELL_H
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ COLORS ┃
-/* ====================== ESTILOS DE TEXTO ====================== */
-# define RESET          "\001\033[0m\002"      // Reset all styles
-# define BOLD           "\001\033[1m\002"      // Bold/Bright
-# define DIM            "\001\033[2m\002"      // Dim (menos brilhante)
-# define ITALIC         "\001\033[3m\002"      // Itálico
-# define UNDERLINE      "\001\033[4m\002"      // Sublinhado
-# define BLINK          "\001\033[5m\002"      // Piscando (nem todos terminais suportam)
-# define REVERSE        "\001\033[7m\002"      // Inverte cor do texto/fundo
-# define HIDDEN         "\001\033[8m\002"      // Texto invisível (útil para senhas)
-# define STRIKETHROUGH  "\001\033[9m\002"      // Tachado (riscado)
-
-/* ====================== CORES DE TEXTO ====================== */
-// Normais
-# define BLACK          "\001\033[30m\002"
-# define RED            "\001\033[31m\002"
-# define GREEN          "\001\033[32m\002"
-# define YELLOW         "\001\033[33m\002"
-# define BLUE           "\001\033[34m\002"
-# define MAGENTA        "\001\033[35m\002"
-# define CYAN           "\001\033[36m\002"
-# define WHITE          "\001\033[37m\002"
-
-// Brilhantes (bold)
-# define BRIGHT_BLACK   "\001\033[90m\002"
-# define BRIGHT_RED     "\001\033[91m\002"
-# define BRIGHT_GREEN   "\001\033[92m\002"
-# define BRIGHT_YELLOW  "\001\033[93m\002"
-# define BRIGHT_BLUE    "\001\033[94m\002"
-# define BRIGHT_MAGENTA "\001\033[95m\002"
-# define BRIGHT_CYAN    "\001\033[96m\002"
-# define BRIGHT_WHITE   "\001\033[97m\002"
-
-/* ====================== CORES DE FUNDO ====================== */
-// Normais
-# define BG_BLACK       "\001\033[40m\002"
-# define BG_RED         "\001\033[41m\002"
-# define BG_GREEN       "\001\033[42m\002"
-# define BG_YELLOW      "\001\033[43m\002"
-# define BG_BLUE        "\001\033[44m\002"
-# define BG_MAGENTA     "\001\033[45m\002"
-# define BG_CYAN        "\001\033[46m\002"
-# define BG_WHITE       "\001\033[47m\002"
-
-// Brilhantes
-# define BG_BRIGHT_BLACK    "\001\033[100m\002"
-# define BG_BRIGHT_RED      "\001\033[101m\002"
-# define BG_BRIGHT_GREEN    "\001\033[102m\002"
-# define BG_BRIGHT_YELLOW   "\001\033[103m\002"
-# define BG_BRIGHT_BLUE     "\001\033[104m\002"
-# define BG_BRIGHT_MAGENTA  "\001\033[105m\002"
-# define BG_BRIGHT_CYAN     "\001\033[106m\002"
-# define BG_BRIGHT_WHITE    "\001\033[107m\002"
+# define RED "\001\033[1;31m\002"
+# define YELLOW "\001\033[1;33m\002"
+# define GREEN "\001\033[1;32m\002"
+# define CYAN "\001\033[1;36m\002"
+# define BLUE "\001\033[1;34m\002"
+# define MAGENTA "\001\033[1;35m\002"
+# define RESET "\001\033[0m\002"
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ LIBRARIES ┃
 # include <stddef.h>
@@ -92,8 +47,7 @@
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ SUPPORT DEFINITIONS ┃
 # define LONG_MAX 9223372036854775807
 # define LONG_MIN -9223372036854775808
-# define NOT_REQUIRED_BY_SUBJECT 
-# define PROMPT BOLD "[" BOLD YELLOW BLINK "4" BOLD GREEN BLINK "2" RESET BOLD "]Minishell: " 
+
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ GLOBAL VARIABLE ┃
 extern int	g_exit_status;
 
