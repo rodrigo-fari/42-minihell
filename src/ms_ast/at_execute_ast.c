@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:58:16 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 19:33:17 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 01:08:00 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void execute_forked_cmd(t_ast_node *node, t_env *env)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		bi_exec(node->args, env);
-		cleanup_shell(get_shell(), 1);
+		cleanup_shell(get_shell(), true, true, false);
 		exit(EXIT_SUCCESS);
 	}
 	else

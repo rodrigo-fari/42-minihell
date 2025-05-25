@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 18:59:49 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 01:14:43 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ int	main(int ac, char **av, char **envp)
 		env = get_env(NULL);
 		ms_exec(input, env);
 	}
+	cleanup_shell(get_shell(), true, true, false);
 	return (0);
 }

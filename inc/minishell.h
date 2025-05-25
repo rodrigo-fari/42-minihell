@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 19:26:11 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 01:19:08 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,9 @@ void		free_tokens(t_token *token);
 void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
 void		free_envp(char **envp);
-void		cleanup_shell(t_shell *shell, int flag);
+void		cleanup_ast(t_shell *shell, bool clean_hd, bool heredoc_child);
+void		cleanup_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_child);
+int			handle_new_filename(t_ast_node *node, char *filename);
 void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
 int			execute_heredoc(t_ast_node *node);
