@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/25 01:14:43 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 22:23:03 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	main(int ac, char **av, char **envp)
 	t_env		*env;
 	char		*input;
 
-	if (ac != 1 || av[1] || ft_array_size(envp) < 10)//! Verificar se isto e permitido pelo subject
+	if (ac != 1 || av[1])//! Verificar se isto e permitido pelo subject
 	{
-		write(2, "[Error] Invalid program usage\n", 30);
+		write(2, RED"[Error] "RESET, 41);
 		return (1);
 	}
 	env = env_to_struct(envp);
@@ -33,7 +33,7 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGPIPE, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		env = get_env(NULL);
-		input = readline(RESET"[42]Minihell$ ");
+		input = readline(PROMPT);
 		if (!input)
 		{
 			write(1, "\n", 1);
