@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/25 01:16:39 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:39:56 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	execute_heredoc(t_ast_node *node)
 		else
 			handle_heredoc_input(node->args[0], fd, true);
 		close(fd);
+		free(node->heredoc_file);
 		cleanup_shell(get_shell(), true, false, true);
 		exit(0);
 	}
@@ -88,9 +89,9 @@ int	collect_all_heredocs(t_ast_node *node)
 		return (0);
 	if (node->type == TOKEN_HEREDOC)
 	{
-		ft_snprintf(filename, sizeof(filename), ".heredoc_tmp_%d", ++heredoc_count);
+		snprintf(filename, sizeof(filename), ".heredoc_%d", ++heredoc_count);
 		if (node->heredoc_file)
-			free(node->heredoc_file);
+			free(node->heredoc_file); // Libera a memória previamente alocada
 		node->heredoc_file = ft_strdup(filename);
 		if (!node->heredoc_file)
 			return (-1);
