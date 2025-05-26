@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sg_sig_treatment.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeberius@student.42porto.com <aeberius>    +#+  +:+       +#+        */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:12:38 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/18 18:42:45 by aeberius@st      ###   ########.fr       */
+/*   Updated: 2025/05/26 17:52:59 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

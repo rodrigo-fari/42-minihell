@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/25 01:19:08 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:56:33 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ typedef enum e_type
 
 char	*get_current_directory(char *current_wd);
 char	*get_own_env(char *env_name);
+void	free_static_pwd(void);
+
 
 
 //【Definition of token's node content】

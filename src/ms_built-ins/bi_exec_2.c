@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/25 00:54:48 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:45:04 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	bi_exec(char **commands, t_env *env)
 		execve(command_path, commands, splitted_envs);
 	}
 	free (command_path);
-	free (splitted_envs);
+	free_splits(splitted_envs);
 	cleanup_shell(shell, true, true, false);
 	exit (g_exit_status);
 }

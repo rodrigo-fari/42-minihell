@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:19:36 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/14 22:29:28 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:50:46 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,10 @@ void free_ast(t_ast_node *node)
 
 	if (!node)
 		return;
-	free_ast(node->left);
-	free_ast(node->right);
+	if (node->left)
+		free_ast(node->left);
+	if (node->right)
+		free_ast(node->right);
 	if (node->args)
 	{
 		i = 0;
@@ -42,7 +44,8 @@ void free_ast(t_ast_node *node)
 			free(node->args[i]);
 			i++;
 		}
-		free(node->args);
+		if (node->args)
+			free(node->args);
 	}
 	free(node);
 }

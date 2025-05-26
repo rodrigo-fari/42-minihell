@@ -56,14 +56,16 @@ clean:
 fclean: 			clean
 					@$(RM) $(NAME)
 
-re: 				fclean all
+re: 				fclean all val
 
 norm:
 					norminette -R CheckForbiddenSourceHeader
 
-val:				re
+val:				
+					clear
 					valgrind --leak-check=full \
-						--show-leak-kinds=all -s \
+						--show-leak-kinds=all \
+						--track-origins=yes \
 						--suppressions=readline_supressor ./$(NAME)
 
 # Colors
