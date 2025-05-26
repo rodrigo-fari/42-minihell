@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:18:54 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/25 00:51:39 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:09:33 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ char	*resolve_command_path(const char *cmd, t_env *env)
 	char	**paths;
 	char	*result;
 
+	(void)env;
 	if (ft_strcmp((char *)cmd, "./minishell") == 0)
 		update_shell_level();
 	result = check_direct_path(cmd);
 	if (result)
 		return (result);
-	path_env = get_env_value(env, "PATH");
+	path_env = get_own_env("PATH");
 	if (!path_env)
 		return (NULL);
 	paths = ft_split(path_env, ':');
