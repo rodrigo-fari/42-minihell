@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/26 16:56:33 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/27 04:35:12 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,13 @@ typedef enum e_type
 	TOKEN_HEREDOC				// For heredoc
 }	t_type;
 
-char	*get_current_directory(char *current_wd);
-char	*get_own_env(char *env_name);
-void	free_static_pwd(void);
-
-
-
 //【Definition of token's node content】
 typedef struct s_token
 {
 	t_type				type;
 	bool				eof_inquote;
 	bool				eof_envvar;
+	bool				expand;
 	char				*value;
 	struct s_token		*next;
 }	t_token;
@@ -126,8 +121,13 @@ void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
 int			execute_heredoc(t_ast_node *node);
 int			collect_all_heredocs(t_ast_node *node);
-
-
+char		*get_current_directory(char *current_wd);
+char		*get_own_env(char *env_name);
+void		free_static_pwd(void);
+char	*expander(char *new_tmp_value);
+char	*verify_quotes(t_token *tmp);
+char	*remove_and_expand(t_token *tmp, char quote, int *i);
+char	*ft_strjoin_free(char *s1, char *s2, int free_flag);
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ABSTRACT SYNTAX TREE FUNCTIONS ┃
 //!【at_build_ats.c】-【5 function limit achived on this file.】 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
@@ -285,6 +285,10 @@ bool		bool_changer(bool key);
 char		*extract_var_name(char *input, int *i);
 char		*get_env_value(t_env *env, char *var_name);
 char		*append_string_to_string(char *str1, const char *str2);
+void		append_variable(char **ret_str, char *input, int *i, t_env *env);
+void		append_exit_status(char **ret_str, int *i);
+
+
 
 //!【ps_remove_quotes.c】-【5 function limit achived on this file.】 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 void		quote_fix(t_token *tokens);

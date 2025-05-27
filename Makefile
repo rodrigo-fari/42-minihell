@@ -56,7 +56,7 @@ clean:
 fclean: 			clean
 					@$(RM) $(NAME)
 
-re: 				fclean all val
+re: 				fclean all
 
 norm:
 					norminette -R CheckForbiddenSourceHeader
