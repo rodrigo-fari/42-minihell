@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/27 04:47:12 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:59:45 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int ac, char **av, char **envp)
 		signal(SIGPIPE, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		env = get_env(NULL);
-		printf(RED"NECESSARIO FINALIZAR EXPANDER ANTES DE CONTINUAR\nFoi dado inicio a correcao do aarquivo 'ps_rm_quotes_and_expand.c', logica pronta, apenas necessario finalizar expansao.\nCheckpoint para continuar.\n"RESET);
 		input = readline(RESET"[42]Minihell$ ");
 		if (!input)
 		{

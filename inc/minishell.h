@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/27 04:35:12 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:38:24 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,14 @@ char	*expander(char *new_tmp_value);
 char	*verify_quotes(t_token *tmp);
 char	*remove_and_expand(t_token *tmp, char quote, int *i);
 char	*ft_strjoin_free(char *s1, char *s2, int free_flag);
+char	*expander_strjoin(char **arr);
+int	array_strlen(char **arr);
+char **resize_array(char **result, size_t capacity);
+void add_word(char **result, const char *s, size_t *index, size_t *i);
+char *strdup_char(const char *s, size_t len);
+char **expander_split(const char *str, char sep);
+
+
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ABSTRACT SYNTAX TREE FUNCTIONS ┃
 //!【at_build_ats.c】-【5 function limit achived on this file.】 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 11:18:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/22 01:40:19 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:50:29 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	bi_echo(t_token *tmp)
     sigaction(SIGPIPE, &sa_ignore, &sa_old);
 
     flag = true;
-    if (!tmp->value[0])
+    if (!tmp->value)
     {
         write(STDOUT_FILENO, "\n", 1);
         sigaction(SIGPIPE, &sa_old, NULL);
