@@ -16,16 +16,14 @@ void	quote_fix(t_token *tokens)
 {
 	t_token	*tmp;
 	char	*new_value;
-	char	*old_value;
 
 	tmp = tokens;
 	while (tmp)
 	{
 		eof_quote_remove(tmp);
 		new_value = verify_quotes(tmp);
-		old_value = tmp->value;
+		free(tmp->value);
 		tmp->value = new_value;
-		// free(old_value);
 		tmp = tmp->next;
 	}
 }
@@ -60,11 +58,10 @@ char	*remove_and_expand(t_token *tmp, char quote, int *i)
 {
 	char	*new_tmp_value;
 
-	if ((quote == '\"' && ft_strchr(tmp->value, '$')) ||
-		ft_strchr(tmp->value, '$'))
-		tmp->expand = true;
-	else
+	if (quote == '\'')
 		tmp->expand = false;
+	if (ft_strchr(tmp->value, '$') && quote != '\'')
+		tmp->expand = true;
 	new_tmp_value = ft_substr(tmp->value, (*i + 1),
 	ft_strlen(tmp->value) - ((*i * 2) + 2));
 	if (tmp->expand == true)
@@ -80,17 +77,13 @@ char	*expander(char *new_tmp_value)
 	char	*ret_str;
 	int		i;
 	
-	split = ft_split(new_tmp_value, '$');
-
+	split = expander_split(new_tmp_value, '$');
 	ft_print_array(split);
 	tmp = split;
 	i = 0;
 	while (split[i])
 	{
-		if (split[i][0] == '\'' || split[i][0] == '\"')
-			tmp[i] = split[i];
-		else
-			tmp[i] = ft_strdup(get_own_env(split[i]));
+		tmp[i] = get_own_env(split[i]);
 		i++;
 	}
 	ret_str = expander_strjoin(tmp);
