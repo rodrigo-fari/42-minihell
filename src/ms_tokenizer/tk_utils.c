@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tk_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rde-fari <rde-fari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 14:47:09 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/04/21 16:27:03 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 21:13:44 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,13 @@ int	skip_whitespace(char *input, int i)
 	while (input[i] && ft_isspace(input[i]))
 		i++;
 	return (i);
+}
+
+bool	return_filename(t_token	*current)
+{
+	return ((current->type == TOKEN_REDIR_IN
+			|| current->type == TOKEN_REDIR_OUT
+			|| current->type == TOKEN_REDIR_OUT_APPEND
+			|| current->type == TOKEN_REDIR_ERR
+			|| current->type == TOKEN_REDIR_ERR_APPEND));
 }

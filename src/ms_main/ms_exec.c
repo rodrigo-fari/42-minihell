@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:19:43 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:46 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 21:11:53 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ms_exec(char *input, t_env *env)
 	commands = tk_splitter(input, 0, 0);
 	if (!pasring_verify(commands, input))
 		return ;
-	tokens = token_to_struct(commands);
+	tokens = token_to_struct(commands, 0);
 	free_splits(commands);
 	quote_fix(tokens);
 	ast_root = build_ast(tokens);

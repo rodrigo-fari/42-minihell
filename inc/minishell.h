@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 19:42:10 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 21:10:47 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,13 +223,11 @@ char		**tk_splitter(char *input, int i, int j);
 int			is_special_char(char c);
 char		*extract_special_token(char *input, int *i);
 int			token_type(char *token);
-t_token		*token_to_struct(char **commands);
+t_token		*token_to_struct(char **commands, int i);
 void		tk_listadd_back(t_token **lst, t_token *new);
 void		free_token_struct(t_token *token);
 int			tk_listsize(t_token *token);
 int			skip_whitespace(char *input, int i);
-
-//In test:
 void		free_tokens(t_token *token);
 void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
@@ -247,32 +245,25 @@ char		*get_own_env(char *env_name);
 void		free_static_pwd(void);
 t_shell		*shell_atributes(t_env *env, t_token *tokens, t_ast_node *ast_root);
 bool		pasring_verify(char **cmds, char *input);
-
-//build ast
 t_ast_node	*attach_redirs(t_ast_node *cmd, t_ast_node *redirs);
 int			count_cmd_args(t_token *token);
 void		fill_cmd_args(t_ast_node *node, t_token **token, int count);
 t_ast_node	*parse_command(t_token **token);
-
-//execute ast
 void		exec_child_process(t_ast_node *node, t_env *env);
 void		exec_parent_process(int pid);
-
-//hd expander
 char		*append_char(char *result, char c);
 char		*append_var(char *result, char *input, int *i);
-
-// ps quotes and remove
 void		append_exit_status(char **ret_str, int *i);
 void		append_variable(char **ret_str, char *input, int *i, t_env *env);
-
-//build ast
 void		handle_filename_redir(t_ast_node *redir, t_token **token);
 void		append_redir_node(t_ast_node **redirs,
-			t_ast_node	**last_redir, t_ast_node *redir);
+				t_ast_node	**last_redir, t_ast_node *redir);
 void		parse_redir_loop(t_token **token, t_ast_node **redirs,
-			t_ast_node **last_redir);
+				t_ast_node **last_redir);
 t_ast_node	*parse_command(t_token **token);
 void		handle_heredoc_redir(t_ast_node *redir, t_token **token);
+
+//test
+bool		return_filename(t_token	*current);
 
 #endif
