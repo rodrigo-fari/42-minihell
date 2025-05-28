@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:19:43 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 02:40:17 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:46:21 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ms_exec(char *input, t_env *env)
 		return ;
 	execute_ast(ast_root, env, tokens, 0);
 	cleanup_heredocs(ast_root);
-	cleanup_shell(shell, false, true, false);
+	cc_shell(shell, false, true, false);
 	return ;
 }
 

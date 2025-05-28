@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:50:15 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/22 18:55:26 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 03:07:22 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	change_directory(const char *path, t_env *env, char *old_pwd)
 {
 	if (!path)
 	{
-		// bi_error("Minishell: cd: No such file or directory\n");
 		g_exit_status = 1;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:14 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 01:09:15 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:46:21 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	pipe_child1(int *pipefd, t_ast_node *left, t_env *env)
 	has_out_redir = node_has_out_redir(left);
 	if (!apply_redirections(left, 1))
 	{
-		cleanup_shell(shell, true, true, false);
+		cc_shell(shell, true, true, false);
 		exit(1);
 	}
 	close(pipefd[0]);
@@ -30,7 +30,7 @@ void	pipe_child1(int *pipefd, t_ast_node *left, t_env *env)
 	close(pipefd[1]);
 	signal(SIGPIPE, SIG_DFL);
 	execute_ast(left, env, NULL, 1);
-	cleanup_shell(shell, true, true, false);
+	cc_shell(shell, true, true, false);
 	exit(g_exit_status);
 }
 
@@ -63,7 +63,7 @@ void	pipe_child2(int *pipefd, t_ast_node *right, t_env *env)
 	shell = get_shell();
 	if (!apply_output_redirections(right, 1))
 	{
-		cleanup_shell(shell, true, true, false);
+		cc_shell(shell, true, true, false);
 		exit(1);
 	}
 	close(pipefd[1]);
@@ -74,7 +74,7 @@ void	pipe_child2(int *pipefd, t_ast_node *right, t_env *env)
 	close(pipefd[0]);
 	signal(SIGPIPE, SIG_DFL);
 	execute_ast(right, env, NULL, 1);
-	cleanup_shell(shell, true, true, false);
+	cc_shell(shell, true, true, false);
 	exit(g_exit_status);
 }
 

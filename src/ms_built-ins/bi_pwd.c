@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:39:51 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/26 20:11:32 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 03:12:48 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,19 @@
 
 void	bi_pwd(void)
 {
-	char *cwd = NULL;
-	char *env_pwd = get_own_env("PWD");
+	char	*cwd;
+	char	*env_pwd;
 
-	// if (!get_own_env("PWD") || !get_own_env("OLDPWD"))
-	// {
-	// 	printf("%s\n", get_current_directory(NULL));
-	// 	return ;
-	// }
+	cwd = NULL;
+	env_pwd = get_own_env("PWD");
 	if (env_pwd && *env_pwd)
 	{
 		printf("%s\n", env_pwd);
-		return;
+		return ;
 	}
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-	{
 		cwd = get_current_directory(NULL);
-		// perror("minishell: pwd");
-		// g_exit_status = 2;
-		// return;
-	}
 	printf("%s\n", cwd);
 	if (cwd)
 		free(cwd);

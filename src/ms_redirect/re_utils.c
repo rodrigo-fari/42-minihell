@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:36:57 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 02:37:03 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:43:01 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,39 +82,4 @@ int	validate_and_process(t_ast_node *node, char *filename, int is_pipe)
 		return (0);
 	filename = node->args[0];
 	return (process_redirection(node, filename, is_pipe));
-}
-
-void	handle_redir_fd(t_ast_node *node, int fd, int is_pipe)
-{
-	(void) is_pipe;
-	if (node->type == TOKEN_REDIR_IN)
-	{
-		if (dup2(fd, STDIN_FILENO) == -1)
-			bi_error("Invalid input.\n");
-	}
-	else if (node->type == TOKEN_REDIR_OUT
-		|| node->type == TOKEN_REDIR_OUT_APPEND)
-	{
-
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			bi_error("Invalid input.\n");
-	}
-	else if (node->type == TOKEN_REDIR_ERR
-		|| node->type == TOKEN_REDIR_ERR_APPEND)
-	{
-		if (dup2(fd, STDERR_FILENO) == -1)
-			bi_error("Invalid input.\n");
-	}
-	close(fd);
-}
-
-int	is_redir(t_type type)
-{
-	return (type == TOKEN_REDIR_IN
-		|| type == TOKEN_REDIR_OUT
-		|| type == TOKEN_REDIR_OUT_APPEND
-		|| type == TOKEN_REDIR_ERR
-		|| type == TOKEN_REDIR_ERR_APPEND
-		|| type == TOKEN_HEREDOC
-	);
 }

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 13:44:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/20 19:12:55 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 03:55:24 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ char	*var_expand(char *input)
 	return (ft_strdup(""));
 }
 
-static int	is_valid_var_char(char c)
+int	is_valid_var_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
 
-static char	*extract_name(char *str)
+char	*extract_name(char *str)
 {
 	int		len;
 
@@ -41,7 +41,7 @@ static char	*extract_name(char *str)
 	return (ft_substr(str, 0, len));
 }
 
-static char	*append_var(char *result, char *input, int *i)
+char	*append_var(char *result, char *input, int *i)
 {
 	char	*var_name;
 	char	*var_value;
@@ -60,7 +60,7 @@ static char	*append_var(char *result, char *input, int *i)
 	return (temp);
 }
 
-static char	*append_char(char *result, char c)
+char	*append_char(char *result, char c)
 {
 	char	buf[2];
 	char	*temp;
@@ -70,33 +70,4 @@ static char	*append_char(char *result, char c)
 	temp = ft_strjoin(result, buf);
 	free(result);
 	return (temp);
-}
-
-void	hd_atributes(t_token *current)
-{
-	if(ft_strchr(current->value, '\"') ||
-	ft_strchr(current->value, '\''))
-		current->eof_inquote = true;
-	if (ft_strchr(current->value, '$'))
-		current->eof_envvar = true;
-}
-
-char	*expand_vars(char *input)
-{
-	int		i;
-	char	*result;
-
-	i = 0;
-	result = ft_strdup("");
-	while (input[i])
-	{
-		if (input[i] == '$')
-			result = append_var(result, input, &i);
-		else
-		{
-			result = append_char(result, input[i]);
-			i++;
-		}
-	}
-	return (result);
 }

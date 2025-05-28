@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:04:14 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 02:25:39 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:46:21 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	child_process(t_ast_node *node, t_env *env)
 	shell = get_shell();
 	if (!apply_redirections(node, 0))
 	{
-		cleanup_shell(shell, true, true, false);
+		cc_shell(shell, true, true, false);
 		exit(EXIT_FAILURE);
 	}
 	cmd = find_command_node(node);
@@ -59,7 +59,7 @@ void	child_process(t_ast_node *node, t_env *env)
 		else
 			bi_exec(cmd->args, env);
 	}
-	cleanup_shell(shell, true, true, false);
+	cc_shell(shell, true, true, false);
 	exit(g_exit_status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/26 16:45:04 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 03:12:08 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	handle_directory_error(char *command)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	ft_putstr_fd("Minishell: ", STDERR_FILENO);
 	ft_putstr_fd(command, STDERR_FILENO);
 	ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 	g_exit_status = 126;
 	shell = get_shell();
-	cleanup_shell(shell, true, true, false);
+	cc_shell(shell, true, true, false);
 	exit(g_exit_status);
 }
 
@@ -36,13 +36,13 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 
 void	bi_exec(char **commands, t_env *env)
 {
-	char	**splitted_envs = NULL;
-	char	*command_path = NULL;
+	char	**splitted_envs;
+	char	*command_path;
 	t_shell	*shell;
 
 	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
 	{
-		cleanup_shell(get_shell(), true, true, false);
+		cc_shell(get_shell(), true, true, false);
 		return ;
 	}
 	shell = get_shell();
@@ -59,7 +59,7 @@ void	bi_exec(char **commands, t_env *env)
 	}
 	free (command_path);
 	free_splits(splitted_envs);
-	cleanup_shell(shell, true, true, false);
+	cc_shell(shell, true, true, false);
 	exit (g_exit_status);
 }
 

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 00:16:56 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 00:17:46 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 03:58:25 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	is_valid_char(char c, char delim)
 {
-    return (c && c != '\'' && c != '\"' && c != ' ' && c != delim);
+	return (c && c != '\'' && c != '\"' && c != ' ' && c != delim);
 }
