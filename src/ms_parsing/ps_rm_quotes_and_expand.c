@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ps_remove_OLD.c                                    :+:      :+:    :+:   */
+/*   ps_remove_quotes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/28 02:11:59 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 02:20:37 by rde-fari         ###   ########.fr       */
+/*                                                +#+#+#+#+#+   */
+/*   Created: 2025/03/12 14:29:07 by rde-fari          #+#    #+#             */
+/*   Updated: 2025/04/21 22:27:16 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* 
-!This old file is just to check leaks and to see if everything is ok while 
-!fixing norminette ;p
- */
 
 void	quote_fix(t_token *tokens)
 {
@@ -75,7 +70,7 @@ char	*replace_values(char *input, char quote, bool key, t_token *tmp)
 	return (ret_str);
 }
 
-void	append_exit_status(char **ret_str, int *i)
+static void	append_exit_status(char **ret_str, int *i)
 {
 	char	*tmp;
 	char	*exit_status_str;
@@ -89,7 +84,7 @@ void	append_exit_status(char **ret_str, int *i)
 	*i += 2;
 }
 
-void	append_variable(char **ret_str, char *input, int *i, t_env *env)
+static void	append_variable(char **ret_str, char *input, int *i, t_env *env)
 {
 	char	*tmp;
 	char	*var_name;

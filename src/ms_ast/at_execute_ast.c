@@ -6,15 +6,15 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:58:16 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 03:06:37 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:31:08 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	validate_cmd(char *cmd)
+int validate_cmd(char *cmd)
 {
-	struct stat	buf;
+	struct stat buf;
 
 	if (stat(cmd, &buf) == -1)
 	{
@@ -41,19 +41,21 @@ int	validate_cmd(char *cmd)
 	return (1);
 }
 
-void	execute_forked_cmd(t_ast_node *node, t_env *env)
+void execute_forked_cmd(t_ast_node *node, t_env *env)
 {
-	pid_t				pid;
-	int					status;
-	int					sig;
-	struct sigaction	sa_old;
-	struct sigaction	sa_ignore;
+	pid_t pid;
+	int status;
+	int sig;
+	struct	sigaction sa_old;
+	struct	sigaction sa_ignore;
+
 
 	if (!node->args || !node->args[0])
-		return ;
+		return;
+
 	if (ft_strchr(node->args[0], '/'))
 		if (!validate_cmd(node->args[0]))
-			return ;
+			return;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -66,7 +68,7 @@ void	execute_forked_cmd(t_ast_node *node, t_env *env)
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
 		bi_exec(node->args, env);
-		cc_shell(get_shell(), true, true, false);
+		cleanup_shell(get_shell(), true, true, false);
 		exit(EXIT_SUCCESS);
 	}
 	else
@@ -84,7 +86,7 @@ void	execute_forked_cmd(t_ast_node *node, t_env *env)
 		{
 			sig = WTERMSIG(status);
 			if (sig == SIGQUIT)
-				write(1, "Quit (core dumped)\n", 19);
+				write( 1, "Quit (core dumped)\n", 19);
 			else if (sig == SIGINT)
 				write(1, "\n", 1);
 			g_exit_status = 128 + sig;
@@ -92,11 +94,11 @@ void	execute_forked_cmd(t_ast_node *node, t_env *env)
 	}
 }
 
-void	execute_ast(t_ast_node *node, t_env *env, t_token *tokens, int flag)
+void execute_ast(t_ast_node *node, t_env *env, t_token *tokens, int flag)
 {
 	(void)flag;
 	if (!node)
-		return ;
+		return;
 	if (node->type == TOKEN_PIPE)
 		execute_pipe(node->left, node->right, env);
 	else if (is_redir(node->type))

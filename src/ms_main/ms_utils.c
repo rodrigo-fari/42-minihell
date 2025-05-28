@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:14 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 01:04:44 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/23 19:21:31 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ void	shlvl_warning(void)
 	tmp = env;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, "SHLVL") == 0
-			&& ft_strcmp(tmp->value, "1000") == 0)
+		if (ft_strcmp(tmp->key, "SHLVL") == 0 &&
+			ft_strcmp(tmp->value, "1000") == 0)
 		{
 			bi_error("Minishell: ");
 			bi_error("warning: ");

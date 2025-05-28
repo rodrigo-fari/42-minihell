@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 03:53:23 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:56:33 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,18 @@ typedef enum e_type
 	TOKEN_HEREDOC				// For heredoc
 }	t_type;
 
+char	*get_current_directory(char *current_wd);
+char	*get_own_env(char *env_name);
+void	free_static_pwd(void);
+
+
+
 //【Definition of token's node content】
 typedef struct s_token
 {
 	t_type				type;
 	bool				eof_inquote;
 	bool				eof_envvar;
-	bool				expand;
 	char				*value;
 	struct s_token		*next;
 }	t_token;
@@ -110,65 +115,18 @@ typedef struct s_shell
 	int					heredoc_fd;
 }	t_shell;
 
-//cleaning stuff
 void		free_tokens(t_token *token);
 void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
 void		free_envp(char **envp);
-void		cleanup_ast(t_shell *shell, bool clean_hd, bool hd_child);
-void		cc_shell(t_shell *shell, bool clean_env, bool clean_hd, bool hd_child);
+void		cleanup_ast(t_shell *shell, bool clean_hd, bool heredoc_child);
+void		cleanup_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_child);
 int			handle_new_filename(t_ast_node *node, char *filename);
 void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
-
-//heredoc stuff
 int			execute_heredoc(t_ast_node *node);
 int			collect_all_heredocs(t_ast_node *node);
-char		*var_expand(char *input);
-int			is_valid_var_char(char c);
-char		*extract_name(char *str);
-char		*append_var(char *result, char *input, int *i);
-char		*append_char(char *result, char c);
-void		hd_atributes(t_token *current);
-char		*expand_vars(char *input);
 
-//new pwd implementation (PATH PWD OLDPWD and no folder situation)
-char		*get_current_directory(char *current_wd);
-char		*get_own_env(char *env_name);
-
-//new quote logic
-char	*expander(char *new_tmp_value);
-char	*verify_quotes(t_token *tmp);
-char	*remove_and_expand(t_token *tmp, char quote, int *i);
-
-//new expander logic
-char	*expander_strjoin(char **arr);
-int		array_strlen(char **arr);
-int		is_valid_char(char c, char delim);
-char	**expander_splitter(char **ret_split, char *str, char delim);
-char	**expander_split(char *str, char delim);
-int		is_expander_char(char c);
-void	handle_special_char(int *i, int *j, char **ret_split, char *str);
-
-//norm new functions
-bool	pasring_verify(char **cmds, char *input);
-t_shell	*shell_atributes(t_env *env, t_token *tokens, t_ast_node *ast_root);
-bool	collect_hd_verify(t_ast_node *ast_root);
-int	validate_and_process(t_ast_node *node, char *filename, int is_pipe);
-bool	node_type(t_ast_node *node);
-
-//at_build_ast.c
-t_ast_node *attach_redirs(t_ast_node *cmd, t_ast_node *redirs);
-int count_cmd_args(t_token *token);
-void fill_cmd_args(t_ast_node *node, t_token **token, int count);
-t_ast_node *parse_command(t_token **token);
-
-//hd_utils.c
-int	ft_itoa_buf(int n, char *buf, size_t size);
-int	handle_specifier(va_list args, char spec, char **dest, size_t *remaining);
-int	ft_snprintf(char *str, size_t size, const char *format, ...);
-char	*hd_remove_quotes(char *input);
-void	eof_quote_remove(t_token *tokens);
 
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫ ABSTRACT SYNTAX TREE FUNCTIONS ┃
@@ -327,10 +285,6 @@ bool		bool_changer(bool key);
 char		*extract_var_name(char *input, int *i);
 char		*get_env_value(t_env *env, char *var_name);
 char		*append_string_to_string(char *str1, const char *str2);
-void		append_variable(char **ret_str, char *input, int *i, t_env *env);
-void		append_exit_status(char **ret_str, int *i);
-
-
 
 //!【ps_remove_quotes.c】-【5 function limit achived on this file.】 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 void		quote_fix(t_token *tokens);

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:18:54 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 03:14:29 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/26 20:09:33 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*resolve_command_path(const char *cmd, t_env *env)
 
 void	handle_builtin_or_empty(char **commands, t_env *env)
 {
-	t_shell	*shell;
+	t_shell *shell;
 
 	shell = get_shell();
 	while (commands[0] && commands[0][0] == '\0')
@@ -77,7 +77,7 @@ void	handle_builtin_or_empty(char **commands, t_env *env)
 	if (is_builtin(commands[0]))
 	{
 		execute_builtin(commands, env, NULL);
-		cc_shell(shell, true, true, false);
+		cleanup_shell(shell, true, true, false);
 		exit(0);
 	}
 }
@@ -88,6 +88,6 @@ void	handle_command_not_found(char *command, t_shell *shell)
 	ft_putstr_fd(command, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	g_exit_status = 127;
-	cc_shell(shell, true, true, false);
+	cleanup_shell(shell, true, true, false);
 	exit(g_exit_status);
 }

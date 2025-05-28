@@ -6,21 +6,24 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 02:46:21 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 01:14:43 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_exit_status = 0;
-
+//CTRL C NO HEARDOC SHOULD QUIT
 int	main(int ac, char **av, char **envp)
 {
 	t_env		*env;
 	char		*input;
 
-	if (ac > 1 || av[1])
+	if (ac != 1 || av[1] || ft_array_size(envp) < 10)//! Verificar se isto e permitido pelo subject
+	{
+		write(2, "[Error] Invalid program usage\n", 30);
 		return (1);
+	}
 	env = env_to_struct(envp);
 	get_env(env);
 	shlvl_warning();
@@ -41,6 +44,6 @@ int	main(int ac, char **av, char **envp)
 		env = get_env(NULL);
 		ms_exec(input, env);
 	}
-	cc_shell(get_shell(), true, true, false);
+	cleanup_shell(get_shell(), true, true, false);
 	return (0);
 }

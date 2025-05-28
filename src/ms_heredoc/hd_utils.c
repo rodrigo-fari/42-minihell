@@ -6,66 +6,58 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:45:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 03:56:23 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/24 17:54:27 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_itoa_buf(int n, char *buf, size_t size)
+static int	ft_itoa_buf(int n, char *buf, size_t size) 
 {
-	int		len;
+	int		len = 0;
 	char	tmp[12];
-	int		i;
+	int		i = 0;
 
-	len = 0;
-	i = 0;
-	if (n == 0)
+	if (n == 0) 
 		tmp[i++] = '0';
-	else
+	else 
 	{
-		if (n < 0)
+		if (n < 0) 
 		{
-			if (size-- > 1)
-				buf[len++] = '-';
+			if (size-- > 1) buf[len++] = '-';
 			n = -n;
 		}
-		while (n > 0)
+		while (n > 0) 
 		{
 			tmp[i++] = (n % 10) + '0';
 			n /= 10;
 		}
 	}
-	while (i-- > 0 && len < (int)size)
+	while (i-- > 0 && len < (int)size) 
 		buf[len++] = tmp[i];
 	return (len);
 }
 
-int	handle_specifier(va_list args, char spec, char **dest, size_t *remaining)
+static int	handle_specifier(va_list args, char spec, char **dest, size_t *remaining) 
 {
-	const char	*s;
-	char		num_buf[12];
-	int			num_len;
-	int			i;
-
-	if (spec == 's')
+	if (spec == 's') 
 	{
-		s = va_arg(args, const char *);
-		if (!s)
-			s = "(null)";
-		i = 0;
-		while (s[i] && *remaining > 1)
+		const char *s = va_arg(args, const char *);
+		if (!s) s = "(null)";
+		int i = 0;
+		while (s[i] && *remaining > 1) 
 		{
 			*(*dest)++ = s[i++];
 			(*remaining)--;
 		}
 		return (ft_strlen(s));
-	}
-	else if (spec == 'd')
+	} 
+	else if (spec == 'd') 
 	{
-		num_len = ft_itoa_buf(va_arg(args, int), num_buf, sizeof(num_buf));
-		i = 0;
-		while (i < num_len && *remaining > 1)
+		char num_buf[12];
+		int num_len = ft_itoa_buf(va_arg(args, int), num_buf, sizeof(num_buf));
+		int i = 0;
+		while (i < num_len && *remaining > 1) 
 		{
 			*(*dest)++ = num_buf[i++];
 			(*remaining)--;
@@ -75,34 +67,29 @@ int	handle_specifier(va_list args, char spec, char **dest, size_t *remaining)
 	return (0);
 }
 
-int	ft_snprintf(char *str, size_t size, const char *format, ...)
+int	ft_snprintf(char *str, size_t size, const char *format, ...) 
 {
 	va_list	args;
-	char	*dest;
-	size_t	remaining;
-	int		total;
+	char	*dest = str;
+	size_t	remaining = size;
+	int		total = 0;
 
-	dest = str;
-	remaining = size;
-	total = 0;
 	va_start(args, format);
-	while (*format && remaining > 1)
+	while (*format && remaining > 1) 
 	{
-		if (*format == '%' && *(format + 1))
+		if (*format == '%' && *(format + 1)) 
 		{
 			total += handle_specifier(args, *(format + 1), &dest, &remaining);
 			format += 2;
-		}
-		else
+		} 
+		else 
 		{
-			if (remaining-- > 1)
-				*dest++ = *format;
+			if (remaining-- > 1) *dest++ = *format;
 			total++;
 			format++;
 		}
 	}
-	if (size > 0)
-		*dest = '\0';
+	if (size > 0) *dest = '\0';
 	va_end (args);
 	return (total);
 }

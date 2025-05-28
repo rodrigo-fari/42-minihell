@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:14 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 02:46:21 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 00:51:39 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,68 +14,67 @@
 
 void	pipe_child1(int *pipefd, t_ast_node *left, t_env *env)
 {
-	int		has_out_redir;
-	t_shell	*shell;
+	int has_out_redir;
+	t_shell *shell;
 
 	shell = get_shell();
 	has_out_redir = node_has_out_redir(left);
 	if (!apply_redirections(left, 1))
 	{
-		cc_shell(shell, true, true, false);
+		cleanup_shell(shell, true, true, false);
 		exit(1);
 	}
 	close(pipefd[0]);
-	if (!has_out_redir)
-		dup2(pipefd[1], STDOUT_FILENO);
+    if (!has_out_redir)
+    {
+        dup2(pipefd[1], STDOUT_FILENO);
+    }
 	close(pipefd[1]);
-	signal(SIGPIPE, SIG_DFL);
+    signal(SIGPIPE, SIG_DFL);
 	execute_ast(left, env, NULL, 1);
-	cc_shell(shell, true, true, false);
+	cleanup_shell(shell, true, true, false);
 	exit(g_exit_status);
 }
 
-int	apply_output_redirections(t_ast_node *node, int is_pipe)
+int apply_output_redirections(t_ast_node *node, int is_pipe)
 {
-	char	*filename;
-
-	while (node && is_redir(node->type))
-	{
-		if (node->type == TOKEN_REDIR_OUT
-			|| node->type == TOKEN_REDIR_OUT_APPEND
-			|| node->type == TOKEN_REDIR_ERR
-			|| node->type == TOKEN_REDIR_ERR_APPEND)
-		{
-			if (!validate_redir_node(node))
-				return (0);
-			filename = node->args[0];
-			if (!process_redirection(node, filename, is_pipe))
-				return (0);
-		}
-		node = node->right;
-	}
-	return (1);
+    char *filename;
+    while (node && is_redir(node->type))
+    {
+        if (node->type == TOKEN_REDIR_OUT || node->type == TOKEN_REDIR_OUT_APPEND ||
+            node->type == TOKEN_REDIR_ERR || node->type == TOKEN_REDIR_ERR_APPEND)
+        {
+            if (!validate_redir_node(node))
+                return (0);
+            filename = node->args[0];
+            if (!process_redirection(node, filename, is_pipe))
+                return (0);
+        }
+        node = node->right;
+    }
+    return 1;
 }
 
 void	pipe_child2(int *pipefd, t_ast_node *right, t_env *env)
 {
-	t_shell	*shell;
+	t_shell *shell;
 
 	shell = get_shell();
-	if (!apply_output_redirections(right, 1))
+    if (!apply_output_redirections(right, 1))
 	{
-		cc_shell(shell, true, true, false);
+		cleanup_shell(shell, true, true, false);
 		exit(1);
-	}
-	close(pipefd[1]);
-	if (!node_has_in_redir(right))
-	{
-		dup2(pipefd[0], STDIN_FILENO);
-	}
-	close(pipefd[0]);
-	signal(SIGPIPE, SIG_DFL);
-	execute_ast(right, env, NULL, 1);
-	cc_shell(shell, true, true, false);
-	exit(g_exit_status);
+	}	
+    close(pipefd[1]);
+    if (!node_has_in_redir(right))
+    {
+        dup2(pipefd[0], STDIN_FILENO);
+    }
+    close(pipefd[0]);
+    signal(SIGPIPE, SIG_DFL);
+    execute_ast(right, env, NULL, 1);
+	cleanup_shell(shell, true, true, false);
+    exit(g_exit_status);
 }
 
 void	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *env)
@@ -106,3 +105,4 @@ void	execute_pipe(t_ast_node *left, t_ast_node *right, t_env *env)
 	else
 		g_exit_status = 1;
 }
+

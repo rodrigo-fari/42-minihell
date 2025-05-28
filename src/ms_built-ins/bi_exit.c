@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:13:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 03:15:09 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/25 00:54:48 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,20 @@ void	define_exit_status(char *exit_status)
 
 	if (!exit_status)
 	{
-		cc_shell(get_shell(), true, true, false);
+		cleanup_shell(get_shell(), true, true, false);
 		exit(g_exit_status);
 	}
 	if (ft_atol(exit_status) != ft_atod(exit_status))
 	{
 		g_exit_status = 2;
-		cc_shell(get_shell(), true, true, false);
+		cleanup_shell(get_shell(), true, true, false);
 		exit (g_exit_status);
 	}
 	exit_lnumber = ft_atol(exit_status);
 	if (exit_lnumber > 256 || exit_lnumber < 0)
 		exit_lnumber %= 256;
 	g_exit_status = exit_lnumber;
-	cc_shell(get_shell(), true, true, false);
+	cleanup_shell(get_shell(), true, true, false);
 	exit (g_exit_status);
 }
 
@@ -55,7 +55,7 @@ bool	check_exit_arguments(t_token *token)
 	if (tk_listsize(token) > 2)
 	{
 		bi_error("Minishell: exit: too many arguments\n");
-		g_exit_status = 1;
+		g_exit_status = 1; // colocar um if
 		return (false);
 	}
 	if (tk_listsize(token) == 2 && ft_strcmp(token->next->value, "--") == 0)

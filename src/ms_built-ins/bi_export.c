@@ -88,7 +88,7 @@ bool	is_valid_key(char *key)
 			bi_error("Minishell: export: not a valid identifier\n");
 			g_exit_status = 1;
 			return (false);
-		}
+	}
 	}
 	i = 1;
 	while (key[i] != '\0')
