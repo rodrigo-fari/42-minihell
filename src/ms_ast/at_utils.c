@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   at_utils_ast.c                                     :+:      :+:    :+:   */
+/*   at_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:55:37 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/17 19:03:14 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:37:44 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,17 @@ void	handle_command(t_ast_node **root, t_ast_node **current, t_token **token)
 	else if (*current)
 		(*current)->right = new_node;
 	*current = new_node;
+}
+
+void	hd_flag_definer(t_ast_node *node, t_token *token)
+{
+	if (token->eof_envvar)
+		node->eof_envvar = true;
+	if (token->eof_inquote)
+		node->eof_inquote = true;
+	else
+	{
+		node->eof_envvar = false;
+		node->eof_inquote = false;
+	}
 }

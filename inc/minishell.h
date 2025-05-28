@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 18:59:56 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:42:10 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,7 +263,16 @@ char		*append_char(char *result, char c);
 char		*append_var(char *result, char *input, int *i);
 
 // ps quotes and remove
-void	append_exit_status(char **ret_str, int *i);
-void	append_variable(char **ret_str, char *input, int *i, t_env *env);
+void		append_exit_status(char **ret_str, int *i);
+void		append_variable(char **ret_str, char *input, int *i, t_env *env);
+
+//build ast
+void		handle_filename_redir(t_ast_node *redir, t_token **token);
+void		append_redir_node(t_ast_node **redirs,
+			t_ast_node	**last_redir, t_ast_node *redir);
+void		parse_redir_loop(t_token **token, t_ast_node **redirs,
+			t_ast_node **last_redir);
+t_ast_node	*parse_command(t_token **token);
+void		handle_heredoc_redir(t_ast_node *redir, t_token **token);
 
 #endif
