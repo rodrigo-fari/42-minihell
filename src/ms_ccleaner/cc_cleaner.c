@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:06:52 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:57:38 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,18 @@ void	ms_free(t_env *env, char *input, char **commands, t_token *tokens)
 	return ;
 }
 
-void cleanup_ast(t_shell *shell, bool clean_hd, bool heredoc_child)
+void	cleanup_ast(t_shell *shell, bool clean_hd, bool heredoc_child)
 {
-    if (shell->ast_root)
-    {
-        if (clean_hd && !heredoc_child)
-            cleanup_heredocs(shell->ast_root);
-        free_ast(shell->ast_root);
-    }
+	if (shell->ast_root)
+	{
+		if (clean_hd && !heredoc_child)
+			cleanup_heredocs(shell->ast_root);
+		free_ast(shell->ast_root);
+	}
 }
 
-void	cc_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_child)
+void	cc_shell(t_shell *shell, bool clean_env, bool clean_hd,
+			bool heredoc_child)
 {
 	if (shell->tokens)
 		free_tokens(shell->tokens);
@@ -52,7 +53,7 @@ void	cc_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_child)
 void	cleanup_heredocs(t_ast_node *node)
 {
 	if (!node)
-		return;
+		return ;
 	if (node->type == TOKEN_HEREDOC && node->heredoc_file)
 	{
 		unlink(node->heredoc_file);

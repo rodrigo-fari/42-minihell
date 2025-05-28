@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 18:37:15 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:59:56 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,5 +261,9 @@ void		exec_parent_process(int pid);
 //hd expander
 char		*append_char(char *result, char c);
 char		*append_var(char *result, char *input, int *i);
+
+// ps quotes and remove
+void	append_exit_status(char **ret_str, int *i);
+void	append_variable(char **ret_str, char *input, int *i, t_env *env);
 
 #endif
