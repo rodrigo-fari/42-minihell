@@ -1,0 +1,157 @@
+#!/bin/bash
+
+# Caminho para o executável da minishell
+MINISHELL_PATH="../minishell"
+SUPRESSOR="readline_supressor"
+VALGRIND="valgrind --leak-check=full --show-leak-kinds=all -s --track-origins=yes --suppressions=$SUPRESSOR"
+VALGRIND_OUTPUT="tester_leak_output"
+
+# Se foi passado um argumento (nome de um ficheiro de testes específico), usa só esse
+if [[ $1 ]]; then
+	test_lists=(
+		$1
+	)
+else
+	test_lists=(
+		"builtins"
+		"pipes"
+		"redirects"
+		"extras"
+	)
+fi
+
+# Se o argumento for "wildcards" ou "bonus", usa a versão bonus da minishell
+if [[ $1 == "wildcards"  || $1 == "bonus" ]]; then
+	MINISHELL_PATH="../minishell_bonus"
+fi
+
+# Códigos de cores ANSI
+BOLD="\e[1m"
+YELLOW="\033[0;33m"
+GREY="\033[38;5;244m"
+PURPLE="\033[0;35m"
+BLUE="\033[0;36m"
+RED="\e[0;31m"
+END="\033[0m"
+BOLD="\033[1m"
+BLINK="\033[5m"
+RESET="\033[0m"
+GREEN="\033[0;32m"
+
+chmod 000 ./test_files/invalid_permission
+
+mkdir -p ./outfiles
+mkdir -p ./mini_outfiles
+mkdir -p ./bash_outfiles
+
+> "$VALGRIND_OUTPUT"
+
+clear
+
+PROMPT=$(echo -e "\nexit\n" | $MINISHELL_PATH | head -n 1 | sed "s/\x1B\[[0-9;]\{1,\}[A-Za-z]//g")
+
+REMOVE_COLORS="sed s/\x1B\[[0-9;]\{1,\}[A-Za-z]//g"
+REMOVE_EXIT="grep -v ^exit$"
+
+i=0
+ok=0
+
+for testfile in ${test_lists[*]}; do
+
+	printf "\n"
+	echo ══════════════════════╣ Testing: $testfile ╠══════════════════════
+
+	while read teste; do
+		((i++))
+
+		rm -rf ./outfiles/*
+		rm -rf ./mini_outfiles/*
+
+		MINI_OUTPUT=$(echo -e "$teste" | $MINISHELL_PATH 2> /dev/null | $REMOVE_COLORS | grep -vF "$PROMPT" | $REMOVE_EXIT)
+		MINI_OUTFILES=$(cp ./outfiles/* ./mini_outfiles &>/dev/null)
+		MINI_EXIT_CODE=$(echo -e "$MINISHELL_PATH\n$teste\necho \$?\nexit\n" | bash 2> /dev/null | $REMOVE_COLORS | grep -vF "$PROMPT" | $REMOVE_EXIT | tail -n 1)
+		MINI_ERROR_MSG=$(trap "" PIPE && echo "$teste" | $MINISHELL_PATH 2>&1 > /dev/null | grep -o '[^:]*$')
+
+		MINI_OUTPUT=$(echo -e "$teste" | $MINISHELL_PATH 2> /dev/null | $REMOVE_COLORS | grep -vF "$PROMPT" | $REMOVE_EXIT)
+
+		TMP_VALGRIND_OUTPUT=$(mktemp)
+		echo -e "$teste\nexit" | $VALGRIND $MINISHELL_PATH 2> "$TMP_VALGRIND_OUTPUT" > /dev/null
+
+		# Verifica leaks e escreve saída apropriada no VALGRIND_OUTPUT
+		if grep -E "definitely lost: [^0]" "$TMP_VALGRIND_OUTPUT" > /dev/null || \
+			grep -E "indirectly lost: [^0]" "$TMP_VALGRIND_OUTPUT" > /dev/null || \
+			grep -E "possibly lost: [^0]" "$TMP_VALGRIND_OUTPUT" > /dev/null; then
+			echo "=== TESTE $i ===" >> "$VALGRIND_OUTPUT"
+			echo "Comando: $teste" >> "$VALGRIND_OUTPUT"
+			cat "$TMP_VALGRIND_OUTPUT" >> "$VALGRIND_OUTPUT"
+		else
+			echo "=== TESTE $i === [OK]" >> "$VALGRIND_OUTPUT"
+		fi
+		for j in {1..5}; do echo "" >> "$VALGRIND_OUTPUT"; done
+
+		rm -f "$TMP_VALGRIND_OUTPUT"
+
+		rm -rf ./outfiles/*
+		rm -rf ./bash_outfiles/*
+
+		BASH_OUTPUT=$(echo -e "$teste" | bash 2> /dev/null)
+		BASH_EXIT_CODE=$(echo $?)
+		BASH_OUTFILES=$(cp ./outfiles/* ./bash_outfiles &>/dev/null)
+		BASH_ERROR_MSG=$(trap "" PIPE && echo "$teste" | bash 2>&1 > /dev/null | grep -o '[^:]*$' | head -n1)
+		OUTFILES_DIFF=$(diff --brief ./mini_outfiles ./bash_outfiles)
+
+		printf "\n"
+		printf $YELLOW
+		printf "[$i]: "
+
+		if [[ "$MINI_OUTPUT" == "$BASH_OUTPUT" && "$MINI_EXIT_CODE" == "$BASH_EXIT_CODE" && -z "$OUTFILES_DIFF" ]]; then
+			printf ✅
+			((ok++))
+			if [ "$MINI_ERROR_MSG" != "$BASH_ERROR_MSG" ]; then
+				printf "${BOLD}${YELLOW}[Different Message]${RESET}"
+			fi
+		else
+			printf "${RED}${BOLD}[ERRO]${RESET}"
+		fi
+
+		printf "$GREY $teste \n$END"
+
+		if [ "$OUTFILES_DIFF" ]; then
+			echo "$OUTFILES_DIFF"
+			echo mini outfiles:
+			cat ./mini_outfiles/*
+			echo bash outfiles:
+			cat ./bash_outfiles/*
+		fi
+		if [ "$MINI_OUTPUT" != "$BASH_OUTPUT" ]; then
+			echo mini output = \($MINI_OUTPUT\)
+			echo bash output = \($BASH_OUTPUT\)
+		fi
+		if [ "$MINI_EXIT_CODE" != "$BASH_EXIT_CODE" ]; then
+			echo mini exit code = $MINI_EXIT_CODE
+			echo bash exit code = $BASH_EXIT_CODE
+		fi
+		if [ "$MINI_ERROR_MSG" != "$BASH_ERROR_MSG" ]; then
+			echo mini error = \($MINI_ERROR_MSG\)
+			echo bash error = \($BASH_ERROR_MSG\)
+		fi
+	done < $testfile
+done
+
+chmod 666 ./test_files/invalid_permission
+
+rm -rf ./outfiles
+rm -rf ./mini_outfiles
+
+if [[ "$ok" == "$i" ]]; then
+	printf "\n"
+	printf "${GREEN}${BOLD}${BLINK}[ALL DONE! Finally! *-*]${RESET}"
+	printf "\n"
+	exit 0
+else
+	printf "\n\n"
+	printf "     ${RED}${BOLD}[FAIL]${RESET}"
+	printf "${RED}${BOLD}${BLINK}[$ok/$i]${RESET}"
+	printf "\n\n\n"
+	exit 1
+fi
