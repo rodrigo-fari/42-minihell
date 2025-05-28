@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:39:05 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 18:43:39 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 23:43:35 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,29 @@ int	node_has_out_redir(t_ast_node *node)
 		node = node->right;
 	}
 	return (0);
+}
+
+int	is_redir_no_hd(t_ast_node *node)
+{
+	return (node->type == TOKEN_REDIR_IN
+		|| node->type == TOKEN_REDIR_OUT
+		|| node->type == TOKEN_REDIR_OUT_APPEND
+		|| node->type == TOKEN_REDIR_ERR
+		|| node->type == TOKEN_REDIR_ERR_APPEND);
+}
+
+bool	handle_hd_fd(t_ast_node *node)
+{
+	int	fd;
+
+	fd = open(node->heredoc_file, O_RDONLY);
+	if (fd < 0)
+		return (false);
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		close(fd);
+		return (false);
+	}
+	close(fd);
+	return (true);
 }

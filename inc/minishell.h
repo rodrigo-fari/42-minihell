@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 22:02:15 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 23:34:57 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,4 +280,9 @@ bool		process_flags(t_token **tmp, bool *flag, struct sigaction *sa_old);
 void		print_tokens(t_token *tmp);
 void		bi_echo(t_token *tmp);
 bool		flag_verify(char *str);
+
+//re_utils
+int			is_redir_no_hd(t_ast_node *node);
+bool		handle_hd_fd(t_ast_node *node);
+
 #endif

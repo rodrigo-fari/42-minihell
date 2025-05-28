@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:46:00 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/01/02 12:44:45 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 23:38:15 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ bool	parse_redin(char **commands)
 		if (ft_strcmp(commands[i], "<") == 0
 			|| ft_strcmp(commands[i], "<<") == 0)
 		{
-			if (!commands[i + 1] || !commands[i - 1])
+			if (!commands[i + 1])
 			{
 				ps_error("bash: syntax error near unexpected token: < || <<");
 				return (false);

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:36:57 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 18:42:58 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 23:43:30 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	process_redirection(t_ast_node *node, char *filename, int is_pipe)
 int	apply_redirections(t_ast_node *node, int is_pipe)
 {
 	char	*filename;
-	int		fd;
 
 	if (!node || !is_redir(node->type))
 		return (1);
@@ -49,21 +48,10 @@ int	apply_redirections(t_ast_node *node, int is_pipe)
 			return (0);
 	if (node->type == TOKEN_HEREDOC)
 	{
-		fd = open(node->heredoc_file, O_RDONLY);
-		if (fd < 0)
+		if (!handle_hd_fd(node))
 			return (0);
-		if (dup2(fd, STDIN_FILENO) == -1)
-		{
-			close(fd);
-			return (0);
-		}
-		close(fd);
 	}
-	else if (node->type == TOKEN_REDIR_IN
-		|| node->type == TOKEN_REDIR_OUT
-		|| node->type == TOKEN_REDIR_OUT_APPEND
-		|| node->type == TOKEN_REDIR_ERR
-		|| node->type == TOKEN_REDIR_ERR_APPEND)
+	else if (is_redir_no_hd(node))
 	{
 		if (!validate_redir_node(node))
 			return (0);
