@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 21:44:18 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 22:02:15 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,11 +269,15 @@ void		append_variable(char **ret_str, char *input, int *i, t_env *env);
 //build ast
 void		handle_filename_redir(t_ast_node *redir, t_token **token);
 void		append_redir_node(t_ast_node **redirs,
-			t_ast_node	**last_redir, t_ast_node *redir);
+				t_ast_node	**last_redir, t_ast_node *redir);
 void		parse_redir_loop(t_token **token, t_ast_node **redirs,
-			t_ast_node **last_redir);
+				t_ast_node **last_redir);
 t_ast_node	*parse_command(t_token **token);
 void		handle_heredoc_redir(t_ast_node *redir, t_token **token);
 bool		return_filename(t_token	*current);
-
+void		handle_sigpipe(struct sigaction *sa_ignore, struct sigaction *sa_old);
+bool		process_flags(t_token **tmp, bool *flag, struct sigaction *sa_old);
+void		print_tokens(t_token *tmp);
+void		bi_echo(t_token *tmp);
+bool		flag_verify(char *str);
 #endif
