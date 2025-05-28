@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 18:17:05 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:37:15 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,5 +257,9 @@ t_ast_node	*parse_command(t_token **token);
 //execute ast
 void		exec_child_process(t_ast_node *node, t_env *env);
 void		exec_parent_process(int pid);
+
+//hd expander
+char		*append_char(char *result, char c);
+char		*append_var(char *result, char *input, int *i);
 
 #endif
