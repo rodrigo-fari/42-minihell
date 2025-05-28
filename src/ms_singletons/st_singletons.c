@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:08:28 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/14 21:37:44 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:52:30 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_env	*get_env(t_env *env)
 
 t_shell	*get_shell(void)
 {
-	static t_shell shell;
+	static t_shell	shell;
+
 	return (&shell);
 }

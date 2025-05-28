@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:06:52 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/26 20:34:12 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void cleanup_ast(t_shell *shell, bool clean_hd, bool heredoc_child)
     }
 }
 
-void	cleanup_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_child)
+void	cc_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_child)
 {
 	if (shell->tokens)
 		free_tokens(shell->tokens);

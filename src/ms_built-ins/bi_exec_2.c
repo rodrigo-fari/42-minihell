@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/26 16:45:04 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_directory_error(char *command)
 	ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 	g_exit_status = 126;
 	shell = get_shell();
-	cleanup_shell(shell, true, true, false);
+	cc_shell(shell, true, true, false);
 	exit(g_exit_status);
 }
 
@@ -42,7 +42,7 @@ void	bi_exec(char **commands, t_env *env)
 
 	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
 	{
-		cleanup_shell(get_shell(), true, true, false);
+		cc_shell(get_shell(), true, true, false);
 		return ;
 	}
 	shell = get_shell();
@@ -59,7 +59,7 @@ void	bi_exec(char **commands, t_env *env)
 	}
 	free (command_path);
 	free_splits(splitted_envs);
-	cleanup_shell(shell, true, true, false);
+	cc_shell(shell, true, true, false);
 	exit (g_exit_status);
 }
 
