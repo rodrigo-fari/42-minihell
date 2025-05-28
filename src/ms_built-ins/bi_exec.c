@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:18:54 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:37:27 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*resolve_command_path(const char *cmd, t_env *env)
 
 void	handle_builtin_or_empty(char **commands, t_env *env)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = get_shell();
 	while (commands[0] && commands[0][0] == '\0')

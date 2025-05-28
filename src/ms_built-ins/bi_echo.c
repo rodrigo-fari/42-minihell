@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 11:18:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/22 01:40:19 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:35:14 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,50 +14,46 @@
 
 void	bi_echo(t_token *tmp)
 {
-    bool			flag;
-    struct sigaction	sa_old;
-    struct sigaction	sa_ignore;
+	bool				flag;
+	struct sigaction	sa_old;
+	struct sigaction	sa_ignore;
 
-    // Configurar para ignorar SIGPIPE
-    sa_ignore.sa_handler = SIG_IGN;
-    sigemptyset(&sa_ignore.sa_mask);
-    sa_ignore.sa_flags = 0;
-    sigaction(SIGPIPE, &sa_ignore, &sa_old);
-
-    flag = true;
-    if (!tmp->value[0])
-    {
-        write(STDOUT_FILENO, "\n", 1);
-        sigaction(SIGPIPE, &sa_old, NULL);
-        return;
-    }
-    while (tmp)
-    {
-        tmp = tmp->next;
-        while (tmp && flag_verify(tmp->value))
-        {
-            flag = false;
-            if (!tmp->next)
-            {
-                sigaction(SIGPIPE, &sa_old, NULL);
-                return;
-            }
-            else
-                tmp = tmp->next;
-        }
-        while (tmp)
-        {
-            ms_print_fd(tmp->value, 1); // Removida a atribuição a `ret`
-            if (tmp->next)
-                ms_print_fd(" ", 1); // Removida a atribuição a `ret`
-            tmp = tmp->next;
-        }
-    }
-    if (tmp == NULL && flag)
-        ms_print_fd("\n", 1); // Removida a atribuição a `ret`
-
-    // Restaurar comportamento original do SIGPIPE
-    sigaction(SIGPIPE, &sa_old, NULL);
+	sa_ignore.sa_handler = SIG_IGN;
+	sigemptyset(&sa_ignore.sa_mask);
+	sa_ignore.sa_flags = 0;
+	sigaction(SIGPIPE, &sa_ignore, &sa_old);
+	flag = true;
+	if (!tmp->value[0])
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		sigaction(SIGPIPE, &sa_old, NULL);
+		return ;
+	}
+	while (tmp)
+	{
+		tmp = tmp->next;
+		while (tmp && flag_verify(tmp->value))
+		{
+			flag = false;
+			if (!tmp->next)
+			{
+				sigaction(SIGPIPE, &sa_old, NULL);
+				return ;
+			}
+			else
+				tmp = tmp->next;
+		}
+		while (tmp)
+		{
+			ms_print_fd(tmp->value, 1);
+			if (tmp->next)
+				ms_print_fd(" ", 1);
+			tmp = tmp->next;
+		}
+	}
+	if (tmp == NULL && flag)
+		ms_print_fd("\n", 1);
+	sigaction(SIGPIPE, &sa_old, NULL);
 }
 
 bool	flag_verify(char *str)

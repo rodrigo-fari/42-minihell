@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:13:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:41:59 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	check_exit_arguments(t_token *token)
 	if (tk_listsize(token) > 2)
 	{
 		bi_error("Minishell: exit: too many arguments\n");
-		g_exit_status = 1; // colocar um if
+		g_exit_status = 1;
 		return (false);
 	}
 	if (tk_listsize(token) == 2 && ft_strcmp(token->next->value, "--") == 0)

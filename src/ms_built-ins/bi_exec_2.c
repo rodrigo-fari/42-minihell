@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:40:12 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	handle_directory_error(char *command)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	ft_putstr_fd("Minishell: ", STDERR_FILENO);
 	ft_putstr_fd(command, STDERR_FILENO);
@@ -36,10 +36,12 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 
 void	bi_exec(char **commands, t_env *env)
 {
-	char	**splitted_envs = NULL;
-	char	*command_path = NULL;
+	char	**splitted_envs;
+	char	*command_path;
 	t_shell	*shell;
 
+	command_path = NULL;
+	splitted_envs = NULL;
 	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
 	{
 		cc_shell(get_shell(), true, true, false);
@@ -57,7 +59,7 @@ void	bi_exec(char **commands, t_env *env)
 		splitted_envs = array_envs(env);
 		execve(command_path, commands, splitted_envs);
 	}
-	free (command_path);
+	free(command_path);
 	free_splits(splitted_envs);
 	cc_shell(shell, true, true, false);
 	exit (g_exit_status);
