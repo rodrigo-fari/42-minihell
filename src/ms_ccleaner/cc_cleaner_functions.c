@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:19:36 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 18:56:45 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 21:36:13 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,12 @@ void	free_tokens(t_token *token)
 	{
 		tmp = token->next;
 		if (token->value)
+		{
 			free(token->value);
+			token->value = NULL;
+		}
 		free(token);
+		token = NULL;
 		token = tmp;
 	}
 }

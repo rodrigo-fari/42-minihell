@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 09:47:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 21:41:09 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ int	main(int ac, char **av, char **envp)
 		if (!input)
 		{
 			write(1, "\n", 1);
+			ms_free(env, input, NULL, NULL);
 			break ;
 		}
 		add_history(input);
 		ms_exec(input, env);
 	}
-	cc_shell(get_shell(), true, true, false);
 	return (0);
 }
