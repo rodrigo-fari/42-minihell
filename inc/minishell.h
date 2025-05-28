@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 00:23:40 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:35:27 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct s_shell
 	int					heredoc_fd;
 }	t_shell;
 
+//cleaning stuff
 void		free_tokens(t_token *token);
 void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
@@ -119,15 +120,21 @@ void		cleanup_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_
 int			handle_new_filename(t_ast_node *node, char *filename);
 void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
+
+//heredoc stuff
 int			execute_heredoc(t_ast_node *node);
 int			collect_all_heredocs(t_ast_node *node);
+
+//new pwd implementation (PATH PWD OLDPWD and no folder situation)
 char		*get_current_directory(char *current_wd);
 char		*get_own_env(char *env_name);
-void		free_static_pwd(void);
+
+//new quote logic
 char	*expander(char *new_tmp_value);
 char	*verify_quotes(t_token *tmp);
 char	*remove_and_expand(t_token *tmp, char quote, int *i);
-char	*ft_strjoin_free(char *s1, char *s2, int free_flag);
+
+//new expander logic
 char	*expander_strjoin(char **arr);
 int		array_strlen(char **arr);
 int		is_valid_char(char c, char delim);
@@ -135,6 +142,13 @@ char	**expander_splitter(char **ret_split, char *str, char delim);
 char	**expander_split(char *str, char delim);
 int		is_expander_char(char c);
 void	handle_special_char(int *i, int *j, char **ret_split, char *str);
+
+//norm new functions
+bool	pasring_verify(char **cmds, char *input);
+t_shell	*shell_atributes(t_env *env, t_token *tokens, t_ast_node *ast_root);
+bool	collect_hd_verify(t_ast_node *ast_root);
+int	validate_and_process(t_ast_node *node, char *filename, int is_pipe);
+bool	node_type(t_ast_node *node);
 
 
 

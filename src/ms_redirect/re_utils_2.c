@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:39:05 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/14 20:08:50 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:27:15 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ int	node_has_in_redir(t_ast_node *node)
 
 int node_has_out_redir(t_ast_node *node)
 {
-    while (node)
-    {
-        if (node->type == TOKEN_REDIR_OUT || node->type == TOKEN_REDIR_OUT_APPEND ||
-            node->type == TOKEN_REDIR_ERR || node->type == TOKEN_REDIR_ERR_APPEND)
-            return 1;
-        node = node->right;
-    }
-    return 0;
+	while (node)
+	{
+		if (node->type == TOKEN_REDIR_OUT || node->type == TOKEN_REDIR_OUT_APPEND ||
+			node->type == TOKEN_REDIR_ERR || node->type == TOKEN_REDIR_ERR_APPEND)
+			return 1;
+		node = node->right;
+	}
+	return 0;
 }

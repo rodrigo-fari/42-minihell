@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 20:04:14 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/25 00:51:39 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:25:39 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	restore_std_fds(int in, int out, int err)
 void	child_process(t_ast_node *node, t_env *env)
 {
 	t_ast_node	*cmd;
-	t_shell *shell;
+	t_shell		*shell;
 
 	shell = get_shell();
 	if (!apply_redirections(node, 0))
@@ -93,9 +93,9 @@ void	execute_redirection(t_ast_node *node, t_env *env)
 
 t_ast_node	*find_command_node(t_ast_node *node)
 {
-    if (!node)
-        return (NULL);
-    if (!is_redir(node->type))
-        return (node);
-    return find_command_node(node->right);
+	if (!node)
+		return (NULL);
+	if (!is_redir(node->type))
+		return (node);
+	return (find_command_node(node->right));
 }

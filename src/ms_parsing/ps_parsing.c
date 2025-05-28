@@ -6,11 +6,21 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 15:43:40 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/01/22 14:54:51 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:21:25 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	pasring_verify(char **cmds, char *input)
+{
+	if (!ps_parsing(cmds, 0))
+	{
+		ms_free(NULL, input, cmds, NULL);
+		return (false);
+	}
+	return (true);
+}
 
 bool	ps_parsing(char **commands, int i)
 {

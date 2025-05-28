@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/26 20:39:56 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 02:07:58 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,4 +103,14 @@ int	collect_all_heredocs(t_ast_node *node)
 	if (collect_all_heredocs(node->right) == -1)
 		return (-1);
 	return (0);
+}
+
+bool	collect_hd_verify(t_ast_node *ast_root)
+{
+	if (collect_all_heredocs(ast_root) == -1)
+	{
+		cleanup_heredocs(ast_root);
+		return (false);
+	}
+	return (true);
 }
