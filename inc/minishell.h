@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:02:28 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:08:41 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,5 +241,11 @@ char		*get_own_env(char *env_name);
 void		free_static_pwd(void);
 t_shell		*shell_atributes(t_env *env, t_token *tokens, t_ast_node *ast_root);
 bool		pasring_verify(char **cmds, char *input);
+
+//build ast
+t_ast_node	*attach_redirs(t_ast_node *cmd, t_ast_node *redirs);
+int			count_cmd_args(t_token *token);
+void		fill_cmd_args(t_ast_node *node, t_token **token, int count);
+t_ast_node	*parse_command(t_token **token);
 
 #endif
