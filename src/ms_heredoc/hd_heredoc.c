@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:24:10 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 void	handle_heredoc_input(const char *delimiter, int fd, bool doiexpand)
 {
-	char *line;
+	char	*line;
 
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_cstrcmp(line, delimiter) == 0 ||
-			ft_cstrcmp(line, "") == 0)
+		if (!line || ft_cstrcmp(line, delimiter) == 0
+			|| ft_cstrcmp(line, "") == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		if (ft_strchr(line, '$') && doiexpand)
 			line = expand_vars(line);
@@ -35,11 +35,11 @@ void	handle_heredoc_input(const char *delimiter, int fd, bool doiexpand)
 
 int	execute_heredoc(t_ast_node *node)
 {
-	int		fd;
-	pid_t	pid;
-	int		status;
-	struct	sigaction sa_old;
-	struct	sigaction sa_ignore;
+	int					fd;
+	pid_t				pid;
+	int					status;
+	struct sigaction	sa_old;
+	struct sigaction	sa_ignore;
 
 	status = 0;
 	if (!node || node->type != TOKEN_HEREDOC)
@@ -91,7 +91,7 @@ int	collect_all_heredocs(t_ast_node *node)
 	{
 		snprintf(filename, sizeof(filename), ".heredoc_%d", ++heredoc_count);
 		if (node->heredoc_file)
-			free(node->heredoc_file); // Libera a memória previamente alocada
+			free(node->heredoc_file);
 		node->heredoc_file = ft_strdup(filename);
 		if (!node->heredoc_file)
 			return (-1);

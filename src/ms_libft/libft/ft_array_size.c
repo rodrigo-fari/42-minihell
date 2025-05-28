@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 18:51:43 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 18:52:42 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:17:45 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	ft_array_size(char **array)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (array[i])
 		i++;
-	return(i);
+	return (i);
 }

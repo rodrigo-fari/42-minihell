@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 19:58:16 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:24:15 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:14:33 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,6 @@ int	validate_cmd(char *cmd)
 void	execute_forked_cmd(t_ast_node *node, t_env *env)
 {
 	pid_t				pid;
-	int					status;
-	int					sig;
-	struct sigaction	sa_old;
-	struct sigaction	sa_ignore;
 
 	if (!node->args || !node->args[0])
 		return ;
@@ -62,34 +58,11 @@ void	execute_forked_cmd(t_ast_node *node, t_env *env)
 	}
 	else if (pid == 0)
 	{
-		signal(SIGPIPE, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		signal(SIGINT, SIG_DFL);
-		bi_exec(node->args, env);
-		cc_shell(get_shell(), true, true, false);
+		exec_child_process(node, env);
 		exit(EXIT_SUCCESS);
 	}
 	else
-	{
-		sigaction(SIGINT, NULL, &sa_old);
-		sa_ignore.sa_handler = SIG_IGN;
-		sigemptyset(&sa_ignore.sa_mask);
-		sa_ignore.sa_flags = 0;
-		sigaction(SIGINT, &sa_ignore, NULL);
-		waitpid(pid, &status, 0);
-		sigaction(SIGINT, &sa_old, NULL);
-		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-		{
-			sig = WTERMSIG(status);
-			if (sig == SIGQUIT)
-				write(1, "Quit (core dumped)\n", 19);
-			else if (sig == SIGINT)
-				write(1, "\n", 1);
-			g_exit_status = 128 + sig;
-		}
-	}
+		exec_parent_process(pid);
 }
 
 void	execute_ast(t_ast_node *node, t_env *env, t_token *tokens, int flag)
@@ -110,5 +83,41 @@ void	execute_ast(t_ast_node *node, t_env *env, t_token *tokens, int flag)
 			else
 				execute_forked_cmd(node, env);
 		}
+	}
+}
+
+void	exec_child_process(t_ast_node *node, t_env *env)
+{
+	signal(SIGPIPE, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	bi_exec(node->args, env);
+	cc_shell(get_shell(), true, true, false);
+}
+
+void	exec_parent_process(int pid)
+{
+	int					sig;
+	int					status;
+	struct sigaction	sa_old;
+	struct sigaction	sa_ignore;
+
+	sigaction(SIGINT, NULL, &sa_old);
+	sa_ignore.sa_handler = SIG_IGN;
+	sigemptyset(&sa_ignore.sa_mask);
+	sa_ignore.sa_flags = 0;
+	sigaction(SIGINT, &sa_ignore, NULL);
+	waitpid(pid, &status, 0);
+	sigaction(SIGINT, &sa_old, NULL);
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGQUIT)
+			write(1, "Quit (core dumped)\n", 19);
+		else if (sig == SIGINT)
+			write(1, "\n", 1);
+		g_exit_status = 128 + sig;
 	}
 }

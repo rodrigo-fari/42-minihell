@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:08:41 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:17:05 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,22 @@ typedef struct s_shell
 	int					heredoc_fd;
 }	t_shell;
 
-
 //In the code:
 t_ast_node	*create_node(t_type type);
-void		handle_pipe(t_ast_node **root, t_ast_node *new_node, t_token **token);
+void		handle_pipe(t_ast_node **root, t_ast_node *new_node,
+				t_token **token);
 void		handle_redir(t_ast_node **root, t_token **token);
 t_ast_node	*build_ast(t_token *tokens);
 void		hd_flag_definer(t_ast_node *node, t_token *token);
 int			validate_cmd(char *cmd);
 void		execute_forked_cmd(t_ast_node *node, t_env *env);
-void		execute_ast(t_ast_node *node, t_env *env, t_token *tokens, int flag);
+void		execute_ast(t_ast_node *node, t_env *env, t_token *tokens,
+				int flag);
 void		free_ast(t_ast_node *node);
 int			count_tokens(t_token *token);
 void		fill_args(t_ast_node *node, t_token **token, int count);
-void		handle_command(t_ast_node **root, t_ast_node **current, t_token **token);
+void		handle_command(t_ast_node **root, t_ast_node **current,
+				t_token **token);
 void		handle_cd_error(void);
 void		change_directory(const char *path, t_env *env, char *old_pwd);
 void		bi_cd(char **user_input, t_env *env);
@@ -124,7 +126,8 @@ void		bi_echo(t_token *tmp);
 bool		flag_verify(char *str);
 void		bi_error(char *str);
 void		handle_directory_error(char *command);
-void		check_command_path(char *command_path, char **commands, t_shell *shell);
+void		check_command_path(char *command_path, char **commands,
+				t_shell *shell);
 void		bi_exec(char **commands, t_env *env);
 void		execute_builtin(char **commands, t_env *env, t_token *tokens);
 void		execute_builtin_child(char **commands, t_env *env, t_token *tokens);
@@ -143,8 +146,10 @@ void		org_env_alpha(t_env *env);
 void		print_org_env(t_env *env);
 void		env_update(t_env *env, char *key, char *value, bool has_equal);
 void		handle_invalid_key(char *key, char *value);
-void		parse_key_value(char *input, char **key, char **value, bool *has_equal);
-void		process_key_value(t_env *env, char *key, char *value, bool has_equal);
+void		parse_key_value(char *input, char **key, char **value,
+				bool *has_equal);
+void		process_key_value(t_env *env, char *key, char *value,
+				bool has_equal);
 void		bi_export(t_env *env, char **user_input);
 bool		is_valid_key(char *key);
 void		env_add(t_env *env, char *key, char *value, bool has_equal);
@@ -230,7 +235,8 @@ void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
 void		free_envp(char **envp);
 void		cleanup_ast(t_shell *shell, bool clean_hd, bool heredoc_child);
-void		cc_shell(t_shell *shell, bool clean_env, bool clean_hd, bool heredoc_child);
+void		cc_shell(t_shell *shell, bool clean_env, bool clean_hd,
+				bool heredoc_child);
 int			handle_new_filename(t_ast_node *node, char *filename);
 void		cleanup_heredocs(t_ast_node *node);
 t_shell		*get_shell(void);
@@ -247,5 +253,9 @@ t_ast_node	*attach_redirs(t_ast_node *cmd, t_ast_node *redirs);
 int			count_cmd_args(t_token *token);
 void		fill_cmd_args(t_ast_node *node, t_token **token, int count);
 t_ast_node	*parse_command(t_token **token);
+
+//execute ast
+void		exec_child_process(t_ast_node *node, t_env *env);
+void		exec_parent_process(int pid);
 
 #endif
