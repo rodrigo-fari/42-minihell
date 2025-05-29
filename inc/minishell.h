@@ -288,4 +288,6 @@ int			handle_number(t_snprintf_data *data);
 void		handle_specifier(char spec, t_snprintf_data *data);
 void		process_format(const char **format, t_snprintf_data *data);
 
+char	**prepare_exec_commands(char **commands);
+char	**prepare_builtin_commands(char **commands);
 #endif
