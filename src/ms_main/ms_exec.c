@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 11:19:43 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 21:45:10 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:24:37 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ void	ms_exec(char *input, t_env *env)
 	ast_root = build_ast(tokens);
 	shell = shell_atributes(env, tokens, ast_root);
 	if (collect_all_heredocs(ast_root))
+	{
+		cleanup_heredocs(ast_root);
 		return ;
+	}
 	execute_ast(ast_root, env, tokens, 0);
 	cleanup_heredocs(ast_root);
 	cc_shell(shell, false, true, false);

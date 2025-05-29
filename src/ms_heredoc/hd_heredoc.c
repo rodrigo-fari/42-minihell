@@ -6,11 +6,13 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/29 00:58:51 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 16:51:38 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+static void	sig_handler(int sig);
 
 void	handle_heredoc_input(const char *delimiter, int fd, bool doiexpand)
 {
@@ -19,8 +21,7 @@ void	handle_heredoc_input(const char *delimiter, int fd, bool doiexpand)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_cstrcmp(line, delimiter) == 0
-			|| ft_cstrcmp(line, "") == 0)
+		if (!line || ft_cstrcmp(line, delimiter) == 0)
 		{
 			free(line);
 			break ;
@@ -62,7 +63,7 @@ static int	handle_child_process(t_ast_node *node)
 {
 	int	fd;
 
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, sig_handler);
 	fd = open(node->heredoc_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
@@ -72,8 +73,16 @@ static int	handle_child_process(t_ast_node *node)
 		handle_heredoc_input(node->args[0], fd, true);
 	close(fd);
 	free(node->heredoc_file);
-	cc_shell(get_shell(), true, false, true);
+	cc_shell(get_shell(), true, true, false);
 	exit(0);
+}
+
+void	sig_handler(int sig)
+{
+	g_exit_status = sig;
+	write(1, "\n", 1);
+	cc_shell(get_shell(), true, true, false);
+	exit(-1);
 }
 
 static int	handle_parent_process(pid_t pid)
