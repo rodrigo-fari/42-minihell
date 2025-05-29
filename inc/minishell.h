@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/29 02:23:49 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:40:04 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ char		*find_executable(char **paths, const char *cmd);
 char		*resolve_command_path(const char *cmd, t_env *env);
 void		handle_builtin_or_empty(char **commands, t_env *env);
 void		handle_command_not_found(char *command, t_shell *shell);
-void		bi_exit(t_token *token);
+void		bi_exit(t_token *token, char **new_commands);
 void		define_exit_status(char *exit_status);
 bool		check_exit_arguments(t_token *token);
 bool		check_exit_signals(t_token *token);

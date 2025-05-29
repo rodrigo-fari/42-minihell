@@ -6,14 +6,16 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:13:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/29 02:24:54 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 18:39:47 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	bi_exit(t_token *token)
+void	bi_exit(t_token *token, char **new_commands)
 {
+	if (new_commands)
+		free_splits(new_commands);
 	ft_putendl_fd("exit", 1);
 	if (tk_listsize(token) == 1)
 		define_exit_status(NULL);
