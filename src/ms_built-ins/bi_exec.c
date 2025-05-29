@@ -67,6 +67,11 @@ void	handle_builtin_or_empty(char **commands, t_env *env)
 	t_shell	*shell;
 
 	shell = get_shell();
+	if (!commands)
+	{
+		g_exit_status = 0;
+		return ;
+	}
 	while (commands[0] && commands[0][0] == '\0')
 		commands++;
 	if (!commands[0] || commands[0][0] == '\0')

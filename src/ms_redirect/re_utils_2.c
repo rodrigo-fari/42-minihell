@@ -14,13 +14,26 @@
 
 int	is_builtin(char *cmd)
 {
-	return (ft_strcmp(cmd, "echo") == 0
-		|| ft_strcmp(cmd, "cd") == 0
-		|| ft_strcmp(cmd, "pwd") == 0
-		|| ft_strcmp(cmd, "export") == 0
-		|| ft_strcmp(cmd, "unset") == 0
-		|| ft_strcmp(cmd, "env") == 0
-		|| ft_strcmp(cmd, "exit") == 0);
+	char	**tokens;
+	int		result;
+
+	tokens = NULL;
+	if (!cmd)
+		return 0;
+	tokens = ft_split(cmd, ' ');
+	if (!tokens || !tokens[0])
+	{
+		free_splits(tokens);
+		return (0);
+	}
+	result = (ft_strcmp(tokens[0], "echo") == 0
+		|| ft_strcmp(tokens[0], "cd") == 0
+		|| ft_strcmp(tokens[0], "pwd") == 0
+		|| ft_strcmp(tokens[0], "export") == 0
+		|| ft_strcmp(tokens[0], "unset") == 0
+		|| ft_strcmp(tokens[0], "exit") == 0);
+	free_splits(tokens);
+	return (result);
 }
 
 int	node_has_in_redir(t_ast_node *node)

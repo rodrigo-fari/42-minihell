@@ -48,51 +48,125 @@ void	bi_exec(char **commands, t_env *env)
 {
 	char	**splitted_envs;
 	char	*command_path;
+	char	**new_commands;
 	t_shell	*shell;
 
 	command_path = NULL;
 	splitted_envs = NULL;
-	if (!verify_commands(commands))
+	new_commands = prepare_exec_commands(commands);
+	if (!verify_commands(new_commands))
+	{
+		free_splits(new_commands);
 		return ;
+	}
 	shell = get_shell();
 	env = get_env(NULL);
-	handle_builtin_or_empty(commands, env);
-	command_path = resolve_command_path(commands[0], env);
+	handle_builtin_or_empty(new_commands, env);
+	command_path = resolve_command_path(new_commands[0], env);
 	if (!command_path)
 		handle_command_not_found(commands[0], shell);
-	check_command_path(command_path, commands, shell);
-	if (ft_strcmp(commands[0], "") != 0)
+	check_command_path(command_path, new_commands, shell);
+	if (ft_strcmp(new_commands[0], "") != 0)
 	{
 		splitted_envs = array_envs(env);
-		execve(command_path, commands, splitted_envs);
+		execve(command_path, new_commands, splitted_envs);
 	}
 	free(command_path);
 	free_splits(splitted_envs);
+	free_splits(new_commands);
+	free_splits(commands);
 	cc_shell(shell, true, true, false);
 	exit (g_exit_status);
+}
+
+char	**prepare_builtin_commands(char **commands)
+{
+	char	**split_cmd;
+	char	**new_commands;
+	int		i;
+	int		j;
+
+	split_cmd = ft_split(commands[0], ' ');
+	if (!split_cmd || !split_cmd[0])
+	{
+		free_splits(split_cmd);
+		return (NULL);
+	}
+	for (i = 0; split_cmd[i]; i++);
+	for (j = 1; commands[j]; j++);
+	new_commands = malloc((i + j + 1) * sizeof(char *));
+	if (!new_commands)
+	{
+		free_splits(split_cmd);
+		return (NULL);
+	}
+	for (i = 0; split_cmd[i]; i++)
+		new_commands[i] = ft_strdup(split_cmd[i]);
+	for (j = 1; commands[j]; j++)
+		new_commands[i++] = ft_strdup(commands[j]);
+	new_commands[i] = NULL;
+	free_splits(split_cmd);
+	return (new_commands);
 }
 
 void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 {
 	t_token	*token;
+	char	**new_commands;
 
 	env = get_env(NULL);
-	if (ft_strcmp(commands[0], "echo") == 0)
+	new_commands = prepare_builtin_commands(commands);
+	if (!new_commands)
+		return ;
+	if (ft_strcmp(new_commands[0], "echo") == 0)
 	{
-		token = token_to_struct(commands, 0);
+		token = token_to_struct(new_commands, 0);
 		bi_echo(token);
 		free_tokens(token);
 	}
-	else if (ft_strcmp(commands[0], "pwd") == 0)
+	else if (ft_strcmp(new_commands[0], "pwd") == 0)
 		bi_pwd();
 	else if (ft_strcmp(commands[0], "exit") == 0)
 		bi_exit(tokens);
-	else if (ft_strcmp(commands[0], "env") == 0)
+	else if (ft_strcmp(new_commands[0], "env") == 0)
 		print_env(env);
-	else if (ft_strcmp(commands[0], "cd") == 0)
-		bi_cd(commands, env);
-	else if (ft_strcmp(commands[0], "unset") == 0)
-		bi_unset(commands, env);
-	else if (ft_strcmp(commands[0], "export") == 0)
-		bi_export(env, commands);
+	else if (ft_strcmp(new_commands[0], "cd") == 0)
+		bi_cd(new_commands, env);
+	else if (ft_strcmp(new_commands[0], "unset") == 0)
+		bi_unset(new_commands, env);
+	else if (ft_strcmp(new_commands[0], "export") == 0)
+		bi_export(env, new_commands);
+	free_splits(new_commands);
+}
+
+ char	**prepare_exec_commands(char **commands)
+{
+    char	**split_cmd;
+    char	**new_commands;
+    int		i, j;
+
+    // Split commands[0] into the actual command and its arguments
+    split_cmd = ft_split(commands[0], ' ');
+    if (!split_cmd || !split_cmd[0])
+    {
+        free_splits(split_cmd);
+        return (NULL);
+    }
+
+    // Merge split_cmd with the rest of commands
+    for (i = 0; split_cmd[i]; i++);
+    for (j = 1; commands[j]; j++);
+    new_commands = malloc((i + j + 1) * sizeof(char *));
+    if (!new_commands)
+    {
+        free_splits(split_cmd);
+        return (NULL);
+    }
+    for (i = 0; split_cmd[i]; i++)
+        new_commands[i] = ft_strdup(split_cmd[i]);
+    for (j = 1; commands[j]; j++)
+        new_commands[i++] = ft_strdup(commands[j]);
+    new_commands[i] = NULL;
+    free_splits(split_cmd);
+    return (new_commands);
 }
