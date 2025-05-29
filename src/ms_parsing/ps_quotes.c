@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:18:19 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/01/22 14:54:27 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:19:45 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	parse_quotes(char *input, int i, int validation)
 	}
 	if (validation % 2 != 0)
 	{
-		ps_error("bash: syntax error near unexpected token: \" || \' ");
+		print_error("Minishell: syntax error near unexpected token: \" || \' ");
 		return (false);
 	}
 	return (true);

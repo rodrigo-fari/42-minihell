@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bi_export_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aeberius <aeberius@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:16:30 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/06 20:39:13 by aeberius         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:25:03 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	env_update(t_env *env, char *key, char *value, bool has_equal)
 
 void	handle_invalid_key(char *key, char *value)
 {
-	bi_error("Minishell: export: not a valid identifier\n");
+	print_error("Minishell: export: not a valid identifier");
 	free(key);
 	free(value);
 	g_exit_status = 1;

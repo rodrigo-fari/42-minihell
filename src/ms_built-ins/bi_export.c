@@ -85,7 +85,7 @@ bool	is_valid_key(char *key)
 	{
 		if (key[0] == '=' || !ft_isalpha(key[0]))
 		{
-			bi_error("Minishell: export: not a valid identifier\n");
+			print_error("Minishell: export: not a valid identifier");
 			g_exit_status = 1;
 			return (false);
 		}
@@ -95,7 +95,7 @@ bool	is_valid_key(char *key)
 	{
 		if (!ft_isalnum(key[i]) && key[i] != '_')
 		{
-			bi_error("Minishell: export: not a valid identifier\n");
+			print_error("Minishell: export: not a valid identifier");
 			g_exit_status = 1;
 			return (false);
 		}

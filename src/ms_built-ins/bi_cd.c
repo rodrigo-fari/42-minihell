@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:38:24 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 16:23:55 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:24:33 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	check_too_many_arguments(char **user_input)
 	{
 		if (i >= 2)
 		{
-			bi_error("bash: cd: too many arguments\n");
+			print_error("Minishell: cd: too many arguments");
 			g_exit_status = 1;
 			return (true);
 		}
@@ -61,7 +61,7 @@ char	*find_path_home_in_env(t_env *env)
 		}
 		tmp = tmp->next;
 	}
-	bi_error("bash: cd: HOME not set\n");
+	print_error("Minishell: cd: HOME not set");
 	g_exit_status = 1;
 	return (NULL);
 }
@@ -81,7 +81,7 @@ char	*find_oldpwd_in_env(t_env *env)
 		}
 		tmp = tmp->next;
 	}
-	bi_error("bash: cd: OLDPWD not set\n");
+	print_error("Minishell: cd: OLDPWD not set");
 	g_exit_status = 1;
 	return (NULL);
 }

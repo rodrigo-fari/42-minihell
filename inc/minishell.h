@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/29 00:53:13 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:23:49 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char		*find_oldpwd_in_env(t_env *env);
 void		update_pwd(t_env *env, char *old_pwd);
 void		bi_echo(t_token *tmp);
 bool		flag_verify(char *str);
-void		bi_error(char *str);
+void		print_error(char *str);
 void		handle_directory_error(char *command);
 void		check_command_path(char *command_path, char **commands,
 				t_shell *shell);
@@ -187,7 +187,6 @@ void		ms_free(t_env *env, char *input, char **commands, t_token *tokens);
 void		ms_print_fd(char *str, int fd);
 int			count_args(char **commands);
 void		shlvl_warning(void);
-void		ps_error(char *str);
 bool		quote_verifier(char *input);
 bool		parse_pipes(char **commands);
 bool		parse_quotes(char *input, int i, int validation);

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 21:11:14 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 14:37:16 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:25:30 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	shlvl_warning(void)
 		if (ft_strcmp(tmp->key, "SHLVL") == 0
 			&& ft_strcmp(tmp->value, "1000") == 0)
 		{
-			bi_error("Minishell: ");
-			bi_error("warning: ");
-			bi_error("shell level (1000) too high, resetting to 1\n");
+			print_error("Minishell: ");
+			print_error("warning: ");
+			print_error("shell level (1000) too high, resetting to 1");
 			env_update(tmp, "SHLVL", ft_itoa(1), true);
 		}
 		tmp = tmp->next;

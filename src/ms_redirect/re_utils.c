@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:36:57 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 23:43:30 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:25:47 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,19 @@ void	handle_redir_fd(t_ast_node *node, int fd, int is_pipe)
 	if (node->type == TOKEN_REDIR_IN)
 	{
 		if (dup2(fd, STDIN_FILENO) == -1)
-			bi_error("Invalid input.\n");
+			print_error("Invalid input.");
 	}
 	else if (node->type == TOKEN_REDIR_OUT
 		|| node->type == TOKEN_REDIR_OUT_APPEND)
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
-			bi_error("Invalid input.\n");
+			print_error("Invalid input.");
 	}
 	else if (node->type == TOKEN_REDIR_ERR
 		|| node->type == TOKEN_REDIR_ERR_APPEND)
 	{
 		if (dup2(fd, STDERR_FILENO) == -1)
-			bi_error("Invalid input.\n");
+			print_error("Invalid input.");
 	}
 	close(fd);
 }

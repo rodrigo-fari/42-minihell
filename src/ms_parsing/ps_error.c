@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/04 14:22:33 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/03/25 11:34:51 by rde-fari         ###   ########.fr       */
+/*   Created: 2025/05/29 02:31:17 by rde-fari          #+#    #+#             */
+/*   Updated: 2025/05/29 02:31:26 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "minishell.h"
 
-void	ps_error(char *str)
+void	print_error(char *str)
 {
 	ms_print_fd(str, 2);
 	ms_print_fd("\n", 2);

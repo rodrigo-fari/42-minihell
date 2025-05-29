@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:13:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:41:59 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:24:54 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	check_exit_arguments(t_token *token)
 {
 	if (tk_listsize(token) > 2)
 	{
-		bi_error("Minishell: exit: too many arguments\n");
+		print_error("Minishell: exit: too many arguments");
 		g_exit_status = 1;
 		return (false);
 	}
@@ -86,7 +86,7 @@ bool	check_exit_signals(t_token *token)
 			i++;
 		if (token->next->value[i])
 		{
-			bi_error("Minishell: exit: numeric argument required\n");
+			print_error("Minishell: exit: numeric argument required");
 			g_exit_status = 2;
 			return (false);
 		}
@@ -98,7 +98,7 @@ bool	check_signal_quantity(int qnt)
 {
 	if (qnt > 1)
 	{
-		bi_error("Minishell: exit: Invalid argument\n");
+		print_error("Minishell: exit: Invalid argument");
 		g_exit_status = 2;
 		return (false);
 	}

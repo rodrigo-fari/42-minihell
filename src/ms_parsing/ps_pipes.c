@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:45:28 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/03/26 15:18:32 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 02:19:10 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	parse_pipes(char **commands)
 	{
 		if (commands[i][0] == '|' && i == 0)
 		{
-			ps_error("bash: syntax error near unexpected token: |");
+			print_error("Minishell: syntax error near unexpected token: |");
 			return (false);
 		}
 		if (quote_verifier(commands[i]) && commands[i + 1])
@@ -30,7 +30,7 @@ bool	parse_pipes(char **commands)
 		{
 			if (!commands[i + 1] || !commands[i - 1])
 			{
-				ps_error("bash: syntax error near unexpected token: |");
+				print_error("Minishell: syntax error near unexpected token: |");
 				return (false);
 			}
 		}
