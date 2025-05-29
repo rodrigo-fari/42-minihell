@@ -44,6 +44,8 @@ void	process_key_value(t_env *env, char *key, char *value, bool has_equal)
 		else
 			env_update(env, key, value, has_equal);
 	}
+	else
+		env_add(env, key, NULL, false);
 	free(key);
 	free(value);
 }
@@ -70,9 +72,7 @@ void	bi_export(t_env *env, char **user_input)
 			free(value);
 		}
 		else
-		{
 			process_key_value(env, key, value, has_equal);
-		}
 		i++;
 	}
 }
