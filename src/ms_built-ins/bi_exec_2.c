@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 21:45:04 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 23:51:40 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 		handle_command_not_found(commands[0], shell);
 }
 
+bool	verify_commands(char **commands)
+{
+	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
+	{
+		cc_shell(get_shell(), true, true, false);
+		return (false);
+	}
+	return (true);
+}
+
 void	bi_exec(char **commands, t_env *env)
 {
 	char	**splitted_envs;
@@ -42,11 +52,8 @@ void	bi_exec(char **commands, t_env *env)
 
 	command_path = NULL;
 	splitted_envs = NULL;
-	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
-	{
-		cc_shell(get_shell(), true, true, false);
+	if (!verify_commands(commands))
 		return ;
-	}
 	shell = get_shell();
 	env = get_env(NULL);
 	handle_builtin_or_empty(commands, env);

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 23:34:57 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/29 00:53:13 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,14 @@ typedef struct s_shell
 	int					heredoc_fd;
 }	t_shell;
 
-//In the code:
+typedef struct s_snprintf_data
+{
+	char				*dest;
+	size_t				remaining;
+	int					total;
+	va_list				*args;
+}	t_snprintf_data;
+
 t_ast_node	*create_node(t_type type);
 void		handle_pipe(t_ast_node **root, t_ast_node *new_node,
 				t_token **token);
@@ -228,8 +235,6 @@ void		tk_listadd_back(t_token **lst, t_token *new);
 void		free_token_struct(t_token *token);
 int			tk_listsize(t_token *token);
 int			skip_whitespace(char *input, int i);
-
-//In test:
 void		free_tokens(t_token *token);
 void		free_ast(t_ast_node *node);
 void		free_env_list(t_env *env);
@@ -247,26 +252,16 @@ char		*get_own_env(char *env_name);
 void		free_static_pwd(void);
 t_shell		*shell_atributes(t_env *env, t_token *tokens, t_ast_node *ast_root);
 bool		pasring_verify(char **cmds, char *input);
-
-//build ast
 t_ast_node	*attach_redirs(t_ast_node *cmd, t_ast_node *redirs);
 int			count_cmd_args(t_token *token);
 void		fill_cmd_args(t_ast_node *node, t_token **token, int count);
 t_ast_node	*parse_command(t_token **token);
-
-//execute ast
 void		exec_child_process(t_ast_node *node, t_env *env);
 void		exec_parent_process(int pid);
-
-//hd expander
 char		*append_char(char *result, char c);
 char		*append_var(char *result, char *input, int *i);
-
-// ps quotes and remove
 void		append_exit_status(char **ret_str, int *i);
 void		append_variable(char **ret_str, char *input, int *i, t_env *env);
-
-//build ast
 void		handle_filename_redir(t_ast_node *redir, t_token **token);
 void		append_redir_node(t_ast_node **redirs,
 				t_ast_node	**last_redir, t_ast_node *redir);
@@ -275,14 +270,23 @@ void		parse_redir_loop(t_token **token, t_ast_node **redirs,
 t_ast_node	*parse_command(t_token **token);
 void		handle_heredoc_redir(t_ast_node *redir, t_token **token);
 bool		return_filename(t_token	*current);
-void		handle_sigpipe(struct sigaction *sa_ignore, struct sigaction *sa_old);
+void		handle_sigpipe(struct sigaction *sa_ignore,
+				struct sigaction *sa_old);
 bool		process_flags(t_token **tmp, bool *flag, struct sigaction *sa_old);
 void		print_tokens(t_token *tmp);
 void		bi_echo(t_token *tmp);
 bool		flag_verify(char *str);
 
-//re_utils
 int			is_redir_no_hd(t_ast_node *node);
 bool		handle_hd_fd(t_ast_node *node);
+bool		verify_commands(char **commands);
+void		handle_regular_char(char c, t_snprintf_data *data);
+int			handle_specifier_logic(va_list args, char spec, char **dest,
+				size_t *rem);
+int			handle_string(t_snprintf_data *data);
+void		write_char(char c, t_snprintf_data *data);
+int			handle_number(t_snprintf_data *data);
+void		handle_specifier(char spec, t_snprintf_data *data);
+void		process_format(const char **format, t_snprintf_data *data);
 
 #endif
