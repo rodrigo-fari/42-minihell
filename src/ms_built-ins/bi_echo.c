@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 11:18:50 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 17:39:18 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:57:26 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ bool	process_flags(t_token **tmp, bool *flag, struct sigaction *sa_old)
 	}
 	return (true);
 }
-
 
 void	print_tokens(t_token *tmp)
 {

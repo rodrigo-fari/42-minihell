@@ -6,43 +6,56 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 13:23:49 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 17:38:35 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:04:42 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**prepare_builtin_commands(char **commands)
+static void	copy_split_cmd(char **dst, char **split_cmd, int *j)
 {
-	char	**split_cmd;
-	char	**new_commands;
-	int		i, j;
+	int	i;
 
-	split_cmd = ft_split(commands[0], ' ');
-	if (!split_cmd || !split_cmd[0])
-	{
-		free_splits(split_cmd);
-		return (NULL);
-	}
-	new_commands = ft_calloc(sizeof(char *), (ft_array_size(split_cmd) + ft_array_size(commands) + 1));
 	i = 0;
-	j = 0;
 	while (split_cmd[i])
 	{
 		if (split_cmd[i][0] != '\0')
-			new_commands[j++] = ft_strdup(split_cmd[i]);
+			dst[(*j)++] = ft_strdup(split_cmd[i]);
 		i++;
 	}
+}
+
+static void	copy_rest_commands(char **dst, char **commands, int *j)
+{
+	int	i;
+
 	i = 1;
 	while (commands[i])
 	{
 		if (commands[i][0] != '\0')
-			new_commands[j++] = ft_strdup(commands[i]);
+			dst[(*j)++] = ft_strdup(commands[i]);
 		i++;
 	}
+}
+
+char	**prepare_builtin_commands(char **commands)
+{
+	char	**split_cmd;
+	char	**new_commands;
+	int		j;
+
+	split_cmd = ft_split(commands[0], ' ');
+	if (!split_cmd || !split_cmd[0])
+		return (free_splits(split_cmd), NULL);
+	new_commands = ft_calloc(sizeof(char *),
+			(ft_array_size(split_cmd) + ft_array_size(commands) + 1));
+	if (!new_commands)
+		return (free_splits(split_cmd), NULL);
+	j = 0;
+	copy_split_cmd(new_commands, split_cmd, &j);
+	copy_rest_commands(new_commands, commands, &j);
 	new_commands[j] = NULL;
-	free_splits(split_cmd);
-	return (new_commands);
+	return (free_splits(split_cmd), new_commands);
 }
 
 bool	verify_commands(char **commands)

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/30 16:09:30 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 17:58:12 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,33 +95,4 @@ void	execute_builtin_2(char **new_commands, t_env *env)
 		bi_unset(new_commands, env);
 	else if (ft_strcmp(new_commands[0], "export") == 0)
 		bi_export(env, new_commands);
-}
-
-char	**prepare_exec_commands(char **commands)
-{
-	char	**new_commands;
-	int		i;
-	int		j;
-	int		valid_count;
-
-	valid_count = 0;
-	j = 0;
-	i = 0;
-	while (commands[i])
-	{
-		if (ft_strcmp(commands[i], "") != 0)
-			valid_count++;
-		i++;
-	}
-	if (valid_count == 0)
-		return (NULL);
-	new_commands = ft_calloc(sizeof(char *), (valid_count + 1));
-	i = 0;
-	while (commands[i])
-	{
-		if (ft_strcmp(commands[i], "") != 0)
-			new_commands[j++] = ft_strdup(commands[i]);
-		i++;
-	}
-	return (new_commands);
 }
