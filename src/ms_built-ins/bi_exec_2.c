@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/29 18:41:16 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/28 23:51:40 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 
 bool	verify_commands(char **commands)
 {
+	if (!commands)
+		return (false);
 	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
 	{
 		cc_shell(get_shell(), true, true, false);
@@ -64,10 +66,7 @@ void	bi_exec(char **commands, t_env *env)
 	handle_builtin_or_empty(new_commands, env);
 	command_path = resolve_command_path(new_commands[0], env);
 	if (!command_path)
-	{
-		free_splits(new_commands);
 		handle_command_not_found(commands[0], shell);
-	}
 	check_command_path(command_path, new_commands, shell);
 	if (ft_strcmp(new_commands[0], "") != 0)
 	{
@@ -141,31 +140,34 @@ void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 		bi_export(env, new_commands);
 }
 
- char	**prepare_exec_commands(char **commands)
+char	**prepare_exec_commands(char **commands)
 {
-	char	**split_cmd;
 	char	**new_commands;
-	int		i, j;
+	int		i;
+	int		j;
+	int		valid_count;
 
-	split_cmd = ft_split(commands[0], ' ');
-	if (!split_cmd || !split_cmd[0])
+	valid_count = 0;
+	j = 0;
+	i = 0;
+	while (commands[i])
 	{
-		free_splits(split_cmd);
-		return (NULL);
+		if (ft_strcmp(commands[i], "") != 0)
+			valid_count++;
+		i++;
 	}
-	for (i = 0; split_cmd[i]; i++);
-	for (j = 1; commands[j]; j++);
-	new_commands = malloc((i + j + 1) * sizeof(char *));
+	if (valid_count == 0)
+		return NULL;
+	new_commands = malloc((valid_count + 1) * sizeof(char *));
 	if (!new_commands)
-	{
-		free_splits(split_cmd);
 		return (NULL);
+	i = 0;
+	while (commands[i])
+	{
+		if (ft_strcmp(commands[i], "") != 0)
+			new_commands[j++] = ft_strdup(commands[i]);
+		i++;
 	}
-	for (i = 0; split_cmd[i]; i++)
-		new_commands[i] = ft_strdup(split_cmd[i]);
-	for (j = 1; commands[j]; j++)
-		new_commands[i++] = ft_strdup(commands[j]);
-	new_commands[i] = NULL;
-	free_splits(split_cmd);
+	new_commands[j] = NULL;
 	return (new_commands);
 }

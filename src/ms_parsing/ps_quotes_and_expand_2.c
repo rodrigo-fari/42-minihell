@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include	"minishell.h"
 
 char	*remove_quotes_and_expand(char *input, t_env *env)
 {

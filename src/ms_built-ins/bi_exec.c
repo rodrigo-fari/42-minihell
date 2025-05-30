@@ -82,6 +82,7 @@ void	handle_builtin_or_empty(char **commands, t_env *env)
 	if (is_builtin(commands[0]))
 	{
 		execute_builtin(commands, env, NULL);
+		free_splits(commands);
 		cc_shell(shell, true, true, false);
 		exit(0);
 	}
