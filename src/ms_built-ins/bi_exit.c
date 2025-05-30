@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:13:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/29 02:24:54 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:40:58 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ bool	check_exit_signals(t_token *token)
 
 	i = 0;
 	qnt = 0;
+	if (!token || !token->next || !token->next->value)
+		return (false);
 	while (token->next->value[i])
 	{
 		while (token->next->value[i] && (!ft_isdigit(token->next->value[i])))
