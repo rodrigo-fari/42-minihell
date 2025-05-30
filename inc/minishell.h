@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/29 02:23:49 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:00:29 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,6 @@ bool		process_flags(t_token **tmp, bool *flag, struct sigaction *sa_old);
 void		print_tokens(t_token *tmp);
 void		bi_echo(t_token *tmp);
 bool		flag_verify(char *str);
-
 int			is_redir_no_hd(t_ast_node *node);
 bool		handle_hd_fd(t_ast_node *node);
 bool		verify_commands(char **commands);
@@ -287,7 +286,10 @@ void		write_char(char c, t_snprintf_data *data);
 int			handle_number(t_snprintf_data *data);
 void		handle_specifier(char spec, t_snprintf_data *data);
 void		process_format(const char **format, t_snprintf_data *data);
+char		**prepare_exec_commands(char **commands);
+char		**prepare_builtin_commands(char **commands);
+void		sig_handler(int sig);
+void		execute_and_clean(t_ast_node *ast_root, t_token *tokens,
+				t_env *env);
 
-char	**prepare_exec_commands(char **commands);
-char	**prepare_builtin_commands(char **commands);
 #endif

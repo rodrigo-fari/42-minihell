@@ -6,11 +6,11 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 18:50:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 18:50:53 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:54:14 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"minishell.h"
+#include "minishell.h"
 
 char	*remove_quotes_and_expand(char *input, t_env *env)
 {

@@ -57,8 +57,10 @@ dkms.conf
 
 # vsCode
 .vscode
+.DSstore
 
 # Folder's
 minishell_tester
+Minishell-Tester
 
 # End of https://www.toptal.com/developers/gitignore/api/c

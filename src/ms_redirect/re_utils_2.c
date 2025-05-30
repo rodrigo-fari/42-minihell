@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:39:05 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 23:43:35 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:57:03 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_builtin(char *cmd)
 
 	tokens = NULL;
 	if (!cmd)
-		return 0;
+		return (0);
 	tokens = ft_split(cmd, ' ');
 	if (!tokens || !tokens[0])
 	{
@@ -27,11 +27,11 @@ int	is_builtin(char *cmd)
 		return (0);
 	}
 	result = (ft_strcmp(tokens[0], "echo") == 0
-		|| ft_strcmp(tokens[0], "cd") == 0
-		|| ft_strcmp(tokens[0], "pwd") == 0
-		|| ft_strcmp(tokens[0], "export") == 0
-		|| ft_strcmp(tokens[0], "unset") == 0
-		|| ft_strcmp(tokens[0], "exit") == 0);
+			|| ft_strcmp(tokens[0], "cd") == 0
+			|| ft_strcmp(tokens[0], "pwd") == 0
+			|| ft_strcmp(tokens[0], "export") == 0
+			|| ft_strcmp(tokens[0], "unset") == 0
+			|| ft_strcmp(tokens[0], "exit") == 0);
 	free_splits(tokens);
 	return (result);
 }

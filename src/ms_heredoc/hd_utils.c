@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:45:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/29 00:51:02 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 12:53:14 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,12 @@ void	eof_quote_remove(t_token *tokens)
 		if (tokens->next->eof_envvar && tokens->next->eof_inquote)
 			tokens->next->value = hd_remove_quotes(tokens->next->value);
 	}
+}
+
+void	sig_handler(int sig)
+{
+	g_exit_status = sig;
+	write(1, "\n", 1);
+	cc_shell(get_shell(), true, true, false);
+	exit(-1);
 }
