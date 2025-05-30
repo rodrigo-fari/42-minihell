@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/28 23:51:40 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:40:27 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,6 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 		handle_command_not_found(commands[0], shell);
 }
 
-bool	verify_commands(char **commands)
-{
-	if (!commands)
-		return (false);
-	if (ft_strcmp(commands[0], "") == 0 && !commands[1])
-	{
-		cc_shell(get_shell(), true, true, false);
-		return (false);
-	}
-	return (true);
-}
-
 void	bi_exec(char **commands, t_env *env)
 {
 	char	**splitted_envs;
@@ -68,47 +56,8 @@ void	bi_exec(char **commands, t_env *env)
 	if (!command_path)
 		handle_command_not_found(commands[0], shell);
 	check_command_path(command_path, new_commands, shell);
-	if (ft_strcmp(new_commands[0], "") != 0)
-	{
-		splitted_envs = array_envs(env);
-		execve(command_path, new_commands, splitted_envs);
-	}
-	free(command_path);
-	free_splits(splitted_envs);
-	free_splits(new_commands);
-	free_splits(commands);
-	cc_shell(shell, true, true, false);
+	execute_cmds(new_commands, command_path, commands);
 	exit (g_exit_status);
-}
-
-char	**prepare_builtin_commands(char **commands)
-{
-	char	**split_cmd;
-	char	**new_commands;
-	int		i;
-	int		j;
-
-	split_cmd = ft_split(commands[0], ' ');
-	if (!split_cmd || !split_cmd[0])
-	{
-		free_splits(split_cmd);
-		return (NULL);
-	}
-	for (i = 0; split_cmd[i]; i++);
-	for (j = 1; commands[j]; j++);
-	new_commands = malloc((i + j + 1) * sizeof(char *));
-	if (!new_commands)
-	{
-		free_splits(split_cmd);
-		return (NULL);
-	}
-	for (i = 0; split_cmd[i]; i++)
-		new_commands[i] = ft_strdup(split_cmd[i]);
-	for (j = 1; commands[j]; j++)
-		new_commands[i++] = ft_strdup(commands[j]);
-	new_commands[i] = NULL;
-	free_splits(split_cmd);
-	return (new_commands);
 }
 
 void	execute_builtin(char **commands, t_env *env, t_token *tokens)
@@ -138,6 +87,8 @@ void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 		bi_unset(new_commands, env);
 	else if (ft_strcmp(new_commands[0], "export") == 0)
 		bi_export(env, new_commands);
+	if (ft_strcmp(commands[0], "exit") != 0)
+		free_splits(new_commands);
 }
 
 char	**prepare_exec_commands(char **commands)
@@ -157,10 +108,8 @@ char	**prepare_exec_commands(char **commands)
 		i++;
 	}
 	if (valid_count == 0)
-		return NULL;
-	new_commands = malloc((valid_count + 1) * sizeof(char *));
-	if (!new_commands)
 		return (NULL);
+	new_commands = ft_calloc(sizeof(char *), (valid_count + 1));
 	i = 0;
 	while (commands[i])
 	{
@@ -168,6 +117,5 @@ char	**prepare_exec_commands(char **commands)
 			new_commands[j++] = ft_strdup(commands[i]);
 		i++;
 	}
-	new_commands[j] = NULL;
 	return (new_commands);
 }

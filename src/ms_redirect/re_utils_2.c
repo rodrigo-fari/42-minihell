@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 19:39:05 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/30 12:57:03 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:39:25 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ int	is_builtin(char *cmd)
 			|| ft_strcmp(tokens[0], "pwd") == 0
 			|| ft_strcmp(tokens[0], "export") == 0
 			|| ft_strcmp(tokens[0], "unset") == 0
-			|| ft_strcmp(tokens[0], "exit") == 0);
+			|| ft_strcmp(tokens[0], "exit") == 0
+			|| ft_strcmp(tokens[0], "env") == 0);
 	free_splits(tokens);
 	return (result);
 }

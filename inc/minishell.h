@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 13:00:29 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:14:56 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -291,5 +291,7 @@ char		**prepare_builtin_commands(char **commands);
 void		sig_handler(int sig);
 void		execute_and_clean(t_ast_node *ast_root, t_token *tokens,
 				t_env *env);
+void		execute_cmds(char **new_commands, char *command_path,
+				char **commands);
 
 #endif
