@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 14:58:44 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:54:54 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ bool		is_valid_key(char *key);
 void		env_add(t_env *env, char *key, char *value, bool has_equal);
 void		bi_pwd(void);
 void		bi_unset(char **user_input, t_env *env);
-void		env_remove(t_env *env, char *key);
+void		env_remove(t_env **env, char *key);
 t_env		*get_env(t_env *env);
 void		update_shell_level(void);
 t_env		*env_to_struct(char **environ);
