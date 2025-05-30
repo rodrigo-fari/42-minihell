@@ -100,6 +100,7 @@ void	append_variable(char **ret_str, char *input, int *i, t_env *env)
 		if (*ret_str)
 			free(*ret_str);
 		*ret_str = tmp;
+		free(var_value);
 	}
 	else
 	{

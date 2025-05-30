@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 18:14:52 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/24 18:10:34 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:55:16 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*get_env_value(t_env *env, char *var_name)
 	while (env)
 	{
 		if (ft_strcmp(env->key, var_name) == 0)
-			return (env->value);
+			return (ft_strdup(env->value));
 		env = env->next;
 	}
 	return (ft_strdup(""));

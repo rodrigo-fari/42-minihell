@@ -63,7 +63,7 @@ norm:
 
 val:				
 					clear
-					valgrind --leak-check=full \
+						valgrind --leak-check=full \
 						--show-leak-kinds=all \
 						--track-origins=yes \
 						--suppressions=readline_supressor ./$(NAME)

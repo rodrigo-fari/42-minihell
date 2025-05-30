@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/30 16:01:36 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:09:30 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	check_command_path(char *command_path, char **commands, t_shell *shell)
 
 	if (stat(command_path, &file_stat) == -1
 		|| access(command_path, X_OK) == -1)
-		handle_command_not_found(commands[0], shell);
+		handle_command_not_found(commands[0], shell, commands);
 }
 
 void	bi_exec(char **commands, t_env *env)
@@ -54,7 +54,7 @@ void	bi_exec(char **commands, t_env *env)
 	handle_builtin_or_empty(new_commands, env);
 	command_path = resolve_command_path(new_commands[0], env);
 	if (!command_path)
-		handle_command_not_found(commands[0], shell);
+		handle_command_not_found(commands[0], shell, new_commands);
 	check_command_path(command_path, new_commands, shell);
 	execute_cmds(new_commands, command_path, commands);
 	exit (g_exit_status);

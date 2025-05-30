@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 12:18:54 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 17:37:27 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:14:24 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,10 @@ void	handle_builtin_or_empty(char **commands, t_env *env)
 	}
 }
 
-void	handle_command_not_found(char *command, t_shell *shell)
+void	handle_command_not_found(char *command, t_shell *shell,
+			char **new_commands)
 {
+	free_splits(new_commands);
 	ft_putstr_fd("Minishell: ", STDERR_FILENO);
 	ft_putstr_fd(command, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
