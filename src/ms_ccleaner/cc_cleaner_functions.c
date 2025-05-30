@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:19:36 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/28 21:36:13 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:19:32 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ void	free_ast(t_ast_node *node)
 		free_ast(node->left);
 	if (node->right)
 		free_ast(node->right);
+	if (node->type == TOKEN_HEREDOC && node->heredoc_file) {
+		free(node->heredoc_file);
+		node->heredoc_file = NULL;
+	}
 	if (node->args)
 	{
 		i = 0;
@@ -48,8 +52,7 @@ void	free_ast(t_ast_node *node)
 			free(node->args[i]);
 			i++;
 		}
-		if (node->args)
-			free(node->args);
+		free(node->args);
 	}
 	free(node);
 }

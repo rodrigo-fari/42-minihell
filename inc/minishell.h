@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 14:14:56 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:58:44 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,5 +293,6 @@ void		execute_and_clean(t_ast_node *ast_root, t_token *tokens,
 				t_env *env);
 void		execute_cmds(char **new_commands, char *command_path,
 				char **commands);
+void		execute_builtin_2(char **new_commands, t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/30 14:40:27 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 14:58:38 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,18 @@ void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 		print_env(env);
 	else if (ft_strcmp(new_commands[0], "cd") == 0)
 		bi_cd(new_commands, env);
-	else if (ft_strcmp(new_commands[0], "unset") == 0)
+	else
+		execute_builtin_2(new_commands, env);
+	if (ft_strcmp(commands[0], "exit") != 0)
+		free_splits(new_commands);
+}
+
+void	execute_builtin_2(char **new_commands, t_env *env)
+{
+	if (ft_strcmp(new_commands[0], "unset") == 0)
 		bi_unset(new_commands, env);
 	else if (ft_strcmp(new_commands[0], "export") == 0)
 		bi_export(env, new_commands);
-	if (ft_strcmp(commands[0], "exit") != 0)
-		free_splits(new_commands);
 }
 
 char	**prepare_exec_commands(char **commands)

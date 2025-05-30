@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:29 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 12:53:07 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:18:15 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ static int	handle_child_process(t_ast_node *node)
 	else
 		handle_heredoc_input(node->args[0], fd, true);
 	close(fd);
-	free(node->heredoc_file);
-	cc_shell(get_shell(), true, true, false);
+	cc_shell(get_shell(), true, true, true);
 	exit(0);
 }
 
