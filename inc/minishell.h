@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:08:08 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 16:11:55 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/31 12:32:16 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void		handle_command_not_found(char *command, t_shell *shell,
 void		bi_exit(t_token *token, char **new_commands);
 void		define_exit_status(char *exit_status);
 bool		check_exit_arguments(t_token *token);
-bool		check_exit_signals(t_token *token);
+bool		check_exit_signals(t_token *token, int i, int qnt);
 bool		check_signal_quantity(int qnt);
 void		org_env_alpha(t_env *env);
 void		print_org_env(t_env *env);

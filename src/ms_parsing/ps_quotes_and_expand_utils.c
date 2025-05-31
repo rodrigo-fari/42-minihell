@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 18:17:01 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 18:18:47 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:45:58 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ char	*remove_quotes_and_expand(char *input, t_env *env)
 	quote = '\0';
 	ret_str = NULL;
 	env = get_env(NULL);
+	if ((input[0] == '$') && (input[1] == '\'' || input[1] == '\"'))
+		input++;
 	while (input[i])
 	{
 		if (is_quote_open(input[i], quote))

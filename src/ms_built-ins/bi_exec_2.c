@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:41:39 by aeberius          #+#    #+#             */
-/*   Updated: 2025/05/30 17:58:12 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/31 13:52:56 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 	char	**new_commands;
 
 	env = get_env(NULL);
+	g_exit_status = 0;
 	new_commands = prepare_builtin_commands(commands);
 	if (!new_commands)
 		return ;
@@ -81,8 +82,6 @@ void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 		bi_exit(tokens, new_commands);
 	else if (ft_strcmp(new_commands[0], "env") == 0)
 		print_env(env);
-	else if (ft_strcmp(new_commands[0], "cd") == 0)
-		bi_cd(new_commands, env);
 	else
 		execute_builtin_2(new_commands, env);
 	if (ft_strcmp(commands[0], "exit") != 0)
@@ -91,7 +90,9 @@ void	execute_builtin(char **commands, t_env *env, t_token *tokens)
 
 void	execute_builtin_2(char **new_commands, t_env *env)
 {
-	if (ft_strcmp(new_commands[0], "unset") == 0)
+	if (ft_strcmp(new_commands[0], "cd") == 0)
+		bi_cd(new_commands, env);
+	else if (ft_strcmp(new_commands[0], "unset") == 0)
 		bi_unset(new_commands, env);
 	else if (ft_strcmp(new_commands[0], "export") == 0)
 		bi_export(env, new_commands);

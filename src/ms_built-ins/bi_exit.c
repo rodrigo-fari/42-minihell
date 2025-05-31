@@ -6,7 +6,7 @@
 /*   By: rde-fari <rde-fari@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 19:13:25 by rde-fari          #+#    #+#             */
-/*   Updated: 2025/05/30 18:40:58 by rde-fari         ###   ########.fr       */
+/*   Updated: 2025/05/31 12:32:30 by rde-fari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	bi_exit(t_token *token, char **new_commands)
 	ft_putendl_fd("exit", 1);
 	if (tk_listsize(token) == 1)
 		define_exit_status(NULL);
-	else if (!check_exit_signals(token))
+	else if (!check_exit_signals(token, 0, 0))
 		define_exit_status(NULL);
 	else
 	{
@@ -68,13 +68,8 @@ bool	check_exit_arguments(t_token *token)
 	return (true);
 }
 
-bool	check_exit_signals(t_token *token)
+bool	check_exit_signals(t_token *token, int i, int qnt)
 {
-	int		i;
-	int		qnt;
-
-	i = 0;
-	qnt = 0;
 	if (!token || !token->next || !token->next->value)
 		return (false);
 	while (token->next->value[i])
